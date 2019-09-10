@@ -1,11 +1,11 @@
 export const firebaseConfig = {
-  apiKey: 'AIzaSyDD-CrBqkcbuhqotDMn1JoTi91Jklmw6jQ',
-  authDomain: 'pocket-seychelles.firebaseapp.com',
-  databaseURL: 'https://pocket-seychelles.firebaseio.com',
-  projectId: 'pocket-seychelles',
-  storageBucket: 'pocket-seychelles.appspot.com',
-  messagingSenderId: '1084215164429',
-  appId: '1:1084215164429:web:da30016f7dbfbd72'
+  apiKey: 'AIzaSyBO_t_kyGRP50u3y3xAcQxihoNHNQcVdZY',
+  authDomain: 'sell-that-rzvgib.firebaseapp.com',
+  databaseURL: 'https://sell-that-rzvgib.firebaseio.com',
+  projectId: 'sell-that-rzvgib',
+  storageBucket: 'sell-that-rzvgib.appspot.com',
+  messagingSenderId: '388544399094',
+  appId: '1:388544399094:web:a8bad7b2c8287e6f'
 };
 
 export const googleKeys = {
@@ -14,8 +14,7 @@ export const googleKeys = {
     '388544399094-n7kiih0l9c196416jb0l09bvroi01u1s.apps.googleusercontent.com',
   androidClientId: `<YOUR_ANDROID_CLIENT_ID>`,
   iosStandaloneAppClientId: `<YOUR_IOS_CLIENT_ID>`,
-  androidStandaloneAppClientId: `<YOUR_ANDROID_CLIENT_ID>`,
-  mapKey: 'AIzaSyCmeXJQDvrAuXxmlpvuIbMKE2fXH_YOSek'
+  androidStandaloneAppClientId: `<YOUR_ANDROID_CLIENT_ID>`
 };
 
 export const facebookKeys = {

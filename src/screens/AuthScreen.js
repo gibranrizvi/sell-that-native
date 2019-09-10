@@ -23,8 +23,8 @@ import {
 } from '../firebase';
 
 // Component imports
-import Heading from '../components/auth/Heading';
-import SocialLogin from '../components/auth/SocialLogin';
+import Heading from '../components/auth-screen/Heading';
+import SocialLogin from '../components/auth-screen/SocialLogin';
 import HorizontalScrollNavigationButton from '../components/horizontal-scroll-navigation-button/HorizontalScrollNavigationButton';
 import TextInputField from '../components/text-input-field/TextInputField';
 import ButtonStandard from '../components/button-standard/ButtonStandard';
@@ -141,7 +141,7 @@ const AuthScreen = () => {
 
     const iosClientId = googleKeys.iosClientId;
 
-    const { type, accessToken, user } = await Google.logInAsync({
+    const { type, idToken, user } = await Google.logInAsync({
       iosClientId,
       androidClientId: `<YOUR_ANDROID_CLIENT_ID_FOR_EXPO>`,
       iosStandaloneAppClientId: `<YOUR_IOS_CLIENT_ID>`,
@@ -149,7 +149,12 @@ const AuthScreen = () => {
     });
 
     if (type === 'success') {
-      console.log('success');
+      _onSignIn({
+        provider: SignInProviders.Google,
+        token: idToken,
+        email: user.email,
+        password: null
+      });
     } else {
       return setGoogleLoading(false);
     }

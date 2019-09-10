@@ -87,6 +87,7 @@ const tabNavigator = createBottomTabNavigator(
     InboxStack
   },
   {
+    initialRouteName: 'InboxStack',
     tabBarOptions: {
       showLabel: false,
       style: {
@@ -95,11 +96,7 @@ const tabNavigator = createBottomTabNavigator(
         position: 'absolute',
         left: 0,
         right: 0,
-        bottom: 0,
-        shadowOffset: { height: 5 },
-        shadowColor: 'black',
-        shadowOpacity: 0.6,
-        elevation: 20
+        bottom: 0
       }
     }
   }

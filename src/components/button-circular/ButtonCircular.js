@@ -1,5 +1,10 @@
 import React from 'react';
-import { Image, TouchableWithoutFeedback, StyleSheet } from 'react-native';
+import {
+  View,
+  Image,
+  TouchableWithoutFeedback,
+  StyleSheet
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const ButtonCircular = ({ onPress, type, icon, color, image, size }) => {
@@ -23,10 +28,12 @@ const ButtonCircular = ({ onPress, type, icon, color, image, size }) => {
     <TouchableWithoutFeedback onPress={onPress}>
       <View
         animation="bounceIn"
-        style={[
-          styles.touchableView,
-          { height: size, width: size, borderRadius: size / 2 }
-        ]}
+        style={{
+          ...styles.touchableView,
+          height: size,
+          width: size,
+          borderRadius: size / 2
+        }}
       >
         {type === 'image' && renderImage()}
         {type === 'icon' && (

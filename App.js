@@ -43,6 +43,9 @@ async function loadResourcesAsync() {
     ]),
     Font.loadAsync({
       ...Ionicons.font,
+      // sacramento: require('./assets/fonts/Sacramento-Regular.ttf'),
+      // yellowtail: require('./assets/fonts/Yellowtail-Regular.ttf'),
+      lobster: require('./assets/fonts/Lobster-Regular.ttf'),
       'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf')
     })
   ]);

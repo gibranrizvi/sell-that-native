@@ -13,15 +13,15 @@ const TabBarIconWithBadge = ({ name, focused }) => {
       {unread && (
         <View
           style={{
-            flex: 1,
-            justifyContent: 'center',
             position: 'absolute',
             top: 0,
             right: -6,
             height: 12,
             width: 12,
             borderRadius: 6,
-            backgroundColor: 'tomato'
+            borderWidth: 1,
+            borderColor: 'white',
+            backgroundColor: 'orangered'
           }}
         />
       )}

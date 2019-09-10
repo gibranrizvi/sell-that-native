@@ -15,6 +15,7 @@ import Animated from 'react-native-reanimated';
 
 // Local imports
 import layout from '../constants/layout';
+import Header from '../components/inbox-screen/Header';
 
 // Component imports
 
@@ -26,7 +27,7 @@ const COLLAPSED_HEADER_HEIGHT =
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight ? StatusBar.currentHeight : 0;
 const SCROLL_DISTANCE = EXPANDED_HEADER_HEIGHT - COLLAPSED_HEADER_HEIGHT;
 
-const InboxScreen = () => {
+const InboxScreen = ({ navigation }) => {
   const [xTabOne, setXTabOne] = useState(0);
   const [xTabTwo, setXTabTwo] = useState(0);
 
@@ -86,6 +87,7 @@ const InboxScreen = () => {
   return (
     <SafeAreaView style={styles.root}>
       {/* Header */}
+      <Header navigation={navigation} />
       <Animated.View
         style={{
           height: COLLAPSED_HEADER_HEIGHT,
@@ -139,7 +141,7 @@ const InboxScreen = () => {
               bottom: 0,
               width: '50%',
               height: '8%',
-              backgroundColor: '#BB2509',
+              backgroundColor: 'orangered',
               transform: [{ translateX: scrollTranslateX }]
             }}
           />
