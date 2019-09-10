@@ -9,6 +9,7 @@ import TabBarIcon from '../components/tab-bar-icon/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import CreateScreen from '../screens/CreateScreen';
 import InboxScreen from '../screens/InboxScreen';
+import TabBarIconWithBadge from '../components/tab-bar-icon-with-badge/TabBarIconWithBadge';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -19,21 +20,17 @@ const HomeStack = createStackNavigator(
   {
     Home: HomeScreen
   },
+  {
+    defaultNavigationOptions: {
+      header: null
+    }
+  },
   config
 );
 
 HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
-    />
-  )
+  tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-home" />
 };
 
 HomeStack.path = '';
@@ -41,6 +38,11 @@ HomeStack.path = '';
 const CreateStack = createStackNavigator(
   {
     Create: CreateScreen
+  },
+  {
+    defaultNavigationOptions: {
+      header: null
+    }
   },
   config
 );
@@ -50,7 +52,7 @@ CreateStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+      name={focused ? 'md-add-circle-outline' : 'ios-add-circle-outline'}
     />
   )
 };
@@ -61,26 +63,47 @@ const InboxStack = createStackNavigator(
   {
     Inbox: InboxScreen
   },
+  {
+    defaultNavigationOptions: {
+      header: null
+    }
+  },
   config
 );
 
 InboxStack.navigationOptions = {
   tabBarLabel: 'Inbox',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
-    />
+    <TabBarIconWithBadge focused={focused} name="md-mail" />
   )
 };
 
 InboxStack.path = '';
 
-const tabNavigator = createBottomTabNavigator({
-  HomeStack,
-  CreateStack,
-  InboxStack
-});
+const tabNavigator = createBottomTabNavigator(
+  {
+    HomeStack,
+    CreateStack,
+    InboxStack
+  },
+  {
+    tabBarOptions: {
+      showLabel: false,
+      style: {
+        backgroundColor: 'white',
+        opacity: 0.95,
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        shadowOffset: { height: 5 },
+        shadowColor: 'black',
+        shadowOpacity: 0.6,
+        elevation: 20
+      }
+    }
+  }
+);
 
 tabNavigator.path = '';
 
