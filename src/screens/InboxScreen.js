@@ -7,11 +7,12 @@ import {
   SafeAreaView,
   Platform,
   TouchableWithoutFeedback,
-  StatusBar
+  StatusBar,
+  Animated
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { format } from 'date-fns';
-import Animated from 'react-native-reanimated';
+import Constants from 'expo-constants';
+// import Animated from 'react-native-reanimated';
 
 // Local imports
 import layout from '../constants/layout';
@@ -24,7 +25,7 @@ const IS_IPHONE_X = height === 812 || height === 896;
 const EXPANDED_HEADER_HEIGHT = height / 5;
 const COLLAPSED_HEADER_HEIGHT =
   Platform.OS === 'ios' ? (IS_IPHONE_X ? 124 : 114) : 114;
-const STATUS_BAR_HEIGHT = StatusBar.currentHeight ? StatusBar.currentHeight : 0;
+const STATUS_BAR_HEIGHT = Constants.statusBarHeight;
 const SCROLL_DISTANCE = EXPANDED_HEADER_HEIGHT - COLLAPSED_HEADER_HEIGHT;
 
 const InboxScreen = ({ navigation }) => {
@@ -36,11 +37,7 @@ const InboxScreen = ({ navigation }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   let horizontalScrollView = null;
 
-  const openTrip = () => {
-    console.log('Trip selected');
-    // TODO Set notifications for this trip to 0
-    // TODO Reduce total number of notifications
-  };
+  const openConversation = () => {};
 
   const handleSlide = xPos => {
     if (xPos === 0) {
@@ -48,10 +45,6 @@ const InboxScreen = ({ navigation }) => {
     } else {
       handleHorizontalScroll(2);
     }
-    // Animated.spring(translateX, {
-    //   toValue: xPos,
-    //   duration: 500
-    // }).start();
   };
 
   const handleHorizontalScroll = tab => {
@@ -88,52 +81,31 @@ const InboxScreen = ({ navigation }) => {
     <SafeAreaView style={styles.root}>
       {/* Header */}
       <Header navigation={navigation} />
+
+      {/* Tabs */}
       <Animated.View
         style={{
-          height: COLLAPSED_HEADER_HEIGHT,
-          width,
           position: 'absolute',
-          top: 0,
+          top: 68,
           left: 0,
-          zIndex: 1,
-          backgroundColor: 'white',
-          shadowOffset: { width: 0, height: 5 },
-          shadowColor: 'black',
-          shadowOpacity: shadowOpacity,
-          elevation: 20
+          right: 0,
+          height: 68 - STATUS_BAR_HEIGHT,
+          borderBottomWidth: 0.4,
+          borderColor: '#999',
+          zIndex: 999,
+          backgroundColor: '#F9F9F9'
         }}
       >
-        <Animated.View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            paddingTop: STATUS_BAR_HEIGHT + 12,
-            opacity: 1
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: '600',
-              color: 'black',
-              alignSelf: 'center'
-            }}
-          >
-            Inbox
-          </Text>
-        </Animated.View>
-
-        {/* Tabs */}
         <View
           style={{
-            flex: 1,
             flexDirection: 'row',
+            justifyContent: 'center',
             position: 'absolute',
             bottom: 0,
-            left: 32,
-            width: width - 64
+            left: 0
           }}
         >
+          {/* Slider */}
           <Animated.View
             style={{
               position: 'absolute',
@@ -145,6 +117,7 @@ const InboxScreen = ({ navigation }) => {
               transform: [{ translateX: scrollTranslateX }]
             }}
           />
+          {/* Activity Tab */}
           <TouchableWithoutFeedback
             onLayout={({ nativeEvent }) => setXTabOne(nativeEvent.layout.x)}
             onPress={() => handleSlide(xTabOne)}
@@ -167,6 +140,7 @@ const InboxScreen = ({ navigation }) => {
               </Text>
             </View>
           </TouchableWithoutFeedback>
+          {/* Messages Tab */}
           <TouchableWithoutFeedback
             onLayout={({ nativeEvent }) => {
               setXTabTwo(nativeEvent.layout.x);
@@ -220,11 +194,7 @@ const InboxScreen = ({ navigation }) => {
           }}
         >
           {/* Upcoming tab */}
-          <View
-            animation="bounceInUp"
-            easing="ease-out"
-            style={styles.root}
-          ></View>
+          <View style={styles.root}></View>
         </ScrollView>
         <ScrollView
           scrollEventThrottle={16}
@@ -233,17 +203,13 @@ const InboxScreen = ({ navigation }) => {
           ])}
           contentContainerStyle={{
             paddingTop: IS_IPHONE_X
-              ? COLLAPSED_HEADER_HEIGHT - 20
-              : COLLAPSED_HEADER_HEIGHT,
-            paddingBottom: 32
+              ? EXPANDED_HEADER_HEIGHT - 40
+              : EXPANDED_HEADER_HEIGHT - 20,
+            paddingBottom: 42
           }}
         >
           {/* History tab */}
-          <View
-            animation="bounceInUp"
-            easing="ease-out"
-            style={styles.root}
-          ></View>
+          <View style={styles.root}></View>
         </ScrollView>
       </ScrollView>
     </SafeAreaView>

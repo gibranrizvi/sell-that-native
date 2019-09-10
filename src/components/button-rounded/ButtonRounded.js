@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const ButtonCircular = ({ onPress, type, icon, color, image, size }) => {
+const ButtonRounded = ({ onPress, type, icon, color, image, size }) => {
   const renderImage = () => {
     return (
       <Image
@@ -18,7 +18,7 @@ const ButtonCircular = ({ onPress, type, icon, color, image, size }) => {
         }
         style={[
           styles.touchableImage,
-          { height: size, width: size, borderRadius: size / 2 }
+          { height: size, width: size, borderRadius: size / 4 }
         ]}
       />
     );
@@ -32,7 +32,7 @@ const ButtonCircular = ({ onPress, type, icon, color, image, size }) => {
           ...styles.touchableView,
           height: size,
           width: size,
-          borderRadius: size / 2
+          borderRadius: size / 4
         }}
       >
         {type === 'image' && renderImage()}
@@ -64,4 +64,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ButtonCircular;
+export default ButtonRounded;

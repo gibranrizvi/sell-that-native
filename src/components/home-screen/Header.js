@@ -9,8 +9,7 @@ import layout from '../../constants/layout';
 
 // Component imports
 import { LogoText } from '../styled-text/StyledText';
-import ButtonCircular from '../button-circular/ButtonCircular';
-import { LinearTextGradient } from 'react-native-text-gradient';
+import ButtonRounded from '../button-rounded/ButtonRounded';
 
 const { width } = layout.window;
 const STATUS_BAR_HEIGHT = Constants.statusBarHeight;
@@ -24,7 +23,7 @@ const Header = ({ navigation }) => {
       <LogoText style={styles.headerTitleText}>Sell that</LogoText>
       {user && user.profile_picture && (
         <View style={styles.profileActionView}>
-          <ButtonCircular
+          <ButtonRounded
             onPress={() => navigate('Profile')}
             type="image"
             image={user.profile_picture}
@@ -44,10 +43,11 @@ const styles = StyleSheet.create({
     borderBottomColor: '#999',
     borderBottomWidth: 0.4,
     position: 'absolute',
-    top: STATUS_BAR_HEIGHT,
+    top: 0,
     left: 0,
     right: 0,
-    paddingVertical: 12,
+    paddingTop: STATUS_BAR_HEIGHT + 12,
+    paddingBottom: 12,
     paddingHorizontal: 6,
     backgroundColor: 'white',
     zIndex: 1000
@@ -60,8 +60,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: STATUS_BAR_HEIGHT,
     top: 0,
-    right: 0,
+    left: 0,
     bottom: 0,
     width: width / 6
   }
