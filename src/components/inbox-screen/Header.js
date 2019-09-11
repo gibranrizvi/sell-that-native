@@ -10,7 +10,7 @@ import layout from '../../constants/layout';
 // Component imports
 import ButtonRounded from '../button-rounded/ButtonRounded';
 
-const { width } = layout.window;
+const { height, width } = layout.window;
 const STATUS_BAR_HEIGHT = Constants.statusBarHeight;
 
 const Header = ({ navigation }) => {
@@ -26,7 +26,7 @@ const Header = ({ navigation }) => {
             onPress={() => navigate('Profile')}
             type="image"
             image={user.profile_picture}
-            size={28}
+            size={32}
           />
         </View>
       )}

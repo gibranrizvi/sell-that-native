@@ -11,15 +11,19 @@ import layout from '../../constants/layout';
 import { LogoText } from '../styled-text/StyledText';
 import ButtonRounded from '../button-rounded/ButtonRounded';
 
-const { width } = layout.window;
+const { height, width } = layout.window;
 const STATUS_BAR_HEIGHT = Constants.statusBarHeight;
+const IS_IPHONE_X = height === 812 || height === 896;
 
 const Header = ({ navigation }) => {
   const { user } = useContext(FirebaseContext);
   const { navigate } = navigation;
 
   return (
-    <View style={styles.headerView}>
+    <View
+      onLayout={({ nativeEvent }) => console.log(nativeEvent)}
+      style={styles.headerView}
+    >
       <LogoText style={styles.headerTitleText}>Sell that</LogoText>
       {user && user.profile_picture && (
         <View style={styles.profileActionView}>
@@ -46,6 +50,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
+    height: IS_IPHONE_X ? 106 : 86, // TODO hard-coded values
     paddingTop: STATUS_BAR_HEIGHT + 12,
     paddingBottom: 12,
     paddingHorizontal: 6,

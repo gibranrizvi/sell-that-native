@@ -86,14 +86,14 @@ const InboxScreen = ({ navigation }) => {
       <Animated.View
         style={{
           position: 'absolute',
-          top: 68,
+          top: IS_IPHONE_X ? 68 + STATUS_BAR_HEIGHT : 68, // TODO might need to fix this later on
           left: 0,
           right: 0,
-          height: 68 - STATUS_BAR_HEIGHT,
+          height: IS_IPHONE_X ? 52 : 68 - STATUS_BAR_HEIGHT, // TODO might need to fix this later on
           borderBottomWidth: 0.4,
           borderColor: '#999',
-          zIndex: 999,
-          backgroundColor: '#F9F9F9'
+          backgroundColor: '#F9F9F9',
+          zIndex: 999
         }}
       >
         <View

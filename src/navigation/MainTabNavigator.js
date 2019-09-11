@@ -87,16 +87,17 @@ const tabNavigator = createBottomTabNavigator(
     InboxStack
   },
   {
-    initialRouteName: 'InboxStack',
+    initialRouteName: 'CreateStack',
     tabBarOptions: {
       showLabel: false,
       style: {
         backgroundColor: 'white',
-        opacity: 0.95,
+        // opacity: 0.95, TODO
         position: 'absolute',
         left: 0,
         right: 0,
-        bottom: 0
+        bottom: 0,
+        height: 52
       }
     }
   }

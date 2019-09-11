@@ -23,7 +23,7 @@ import {
 } from '../firebase';
 
 // Component imports
-import Heading from '../components/auth-screen/Heading';
+import Heading from '../components/heading/Heading';
 import SocialLogin from '../components/auth-screen/SocialLogin';
 import HorizontalScrollNavigationButton from '../components/horizontal-scroll-navigation-button/HorizontalScrollNavigationButton';
 import TextInputField from '../components/text-input-field/TextInputField';

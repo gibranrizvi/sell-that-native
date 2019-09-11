@@ -13,9 +13,9 @@ import Constants from 'expo-constants';
 
 // Local imports
 import layout from '../constants/layout';
-import Header from '../components/home-screen/Header';
 
 // Component imports
+import Header from '../components/home-screen/Header';
 
 // Constants
 const { height, width } = layout.window;
@@ -32,13 +32,19 @@ const HomeScreen = ({ navigation }) => {
       {/* Header */}
       <Header navigation={navigation} />
       {/* Posts */}
-      <ScrollView
-        style={{ ...styles.bodyScrollView, flex: 1, backgroundColor: 'grey' }}
-      >
-        <View style={{ height: width / 3, width, borderWidth: 1 }}></View>
-        <View style={{ height: width / 3, width, borderWidth: 1 }}></View>
-        <View style={{ height: width / 3, width, borderWidth: 1 }}></View>
-        <View style={{ height: width / 3, width, borderWidth: 1 }}></View>
+      <ScrollView contentContainerStyle={styles.bodyScrollView}>
+        <View
+          style={{ height: width / 1.2, marginTop: 12, borderWidth: 1 }}
+        ></View>
+        <View
+          style={{ height: width / 1.2, marginTop: 12, borderWidth: 1 }}
+        ></View>
+        <View
+          style={{ height: width / 1.2, marginTop: 12, borderWidth: 1 }}
+        ></View>
+        <View
+          style={{ height: width / 1.2, marginTop: 12, borderWidth: 1 }}
+        ></View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -47,36 +53,8 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   root: { backgroundColor: 'white' },
   bodyScrollView: {
-    paddingTop: STATUS_BAR_HEIGHT
-  },
-  cardHeaderView: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    padding: 20,
-    zIndex: 2
-  },
-  cardFooterView: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    padding: 20,
-    zIndex: 2
-  },
-  cardTitleText: {
-    fontSize: 28,
-    fontWeight: '700'
-  },
-  cardSubtitleText: {
-    fontSize: 16,
-    fontWeight: '500',
-    marginBottom: 6
-  },
-  cardDescriptionText: {
-    fontSize: 16,
-    fontWeight: '500'
+    paddingTop: 64, // TODO this is hard-coded
+    paddingBottom: 64
   }
 });
 
