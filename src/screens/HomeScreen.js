@@ -32,7 +32,10 @@ const HomeScreen = ({ navigation }) => {
       {/* Header */}
       <Header navigation={navigation} />
       {/* Posts */}
-      <ScrollView contentContainerStyle={styles.bodyScrollView}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.bodyScrollView}
+      >
         <View
           style={{ height: width / 1.2, marginTop: 12, borderWidth: 1 }}
         ></View>

@@ -33,6 +33,7 @@ const IS_IPHONE_X = height === 812 || height === 896;
 const STATUS_BAR_HEIGHT = Constants.statusBarHeight;
 
 const CreateScreen = () => {
+  const [category, setCategory] = React.useState('');
   const [title, setTitle] = React.useState('');
 
   return (
@@ -41,22 +42,35 @@ const CreateScreen = () => {
         <Heading title="What are you selling?" subtitle="Enter some details" />
       </View>
       <ScrollView contentContainerStyle={styles.bodyScrollView}>
-        <Text style={styles.selectCategoryText}>Select a category:</Text>
-        <CategoryTabScrollView
-          tabs={[
-            { name: 'Hotels' },
-            { name: 'Villas' },
-            { name: 'Apartments' },
-            { name: 'Guest Houses' },
-            { name: 'Restaurants' },
-            { name: 'Experiences' }
-          ]}
-        />
-        <View style={styles.formFieldsView}>
-          <TextInputField
-            value={title}
-            onChangeText={value => setTitle(value)}
-            placeholder="What are you selling?"
+        {/* Product title */}
+        <View style={styles.sectionView}>
+          <Text style={styles.subHeadingText}>Title</Text>
+          <View style={styles.formFieldsView}>
+            <TextInputField
+              value={title}
+              onChangeText={value => setTitle(value)}
+              placeholder="What are you selling?"
+            />
+          </View>
+        </View>
+
+        {/* Product category */}
+        <View style={styles.sectionView}>
+          <Text style={styles.subHeadingText}>Select a category</Text>
+          <CategoryTabScrollView
+            tabs={[
+              { name: 'Electronics' },
+              { name: 'Services' },
+              { name: 'Vehicles' },
+              { name: 'Fashion' },
+              { name: 'Health & Beauty' },
+              { name: 'Home & Garden' },
+              { name: 'Sports' },
+              { name: 'Property' },
+              { name: 'Miscellaneous' }
+            ]}
+            selected={category}
+            onSelectCategory={value => setCategory(value)}
           />
         </View>
       </ScrollView>
@@ -75,9 +89,19 @@ const styles = StyleSheet.create({
   bodyScrollView: {
     marginVertical: 12
   },
-  selectCategoryText: { margin: 12 },
+  sectionView: {
+    marginVertical: 8
+  },
+  subHeadingText: {
+    marginHorizontal: 12,
+    marginBottom: 6,
+    marginTop: 12,
+    fontWeight: '500',
+    color: 'black',
+    fontSize: 18
+  },
   categoryScrollView: {
-    marginVertical: 6
+    marginVertical: 8
   },
   formFieldsView: {
     marginHorizontal: 12

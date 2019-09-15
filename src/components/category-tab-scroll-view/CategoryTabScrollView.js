@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native';
 // Component imports
 import CategoryTabItem from '../category-tab-item/CategoryTabItem';
 
-const CategoryTabScrollView = ({ navigate, tabs }) => {
+const CategoryTabScrollView = ({ tabs, selected, onSelectCategory }) => {
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       {tabs.map((tab, index) => (
@@ -13,7 +13,9 @@ const CategoryTabScrollView = ({ navigate, tabs }) => {
           name={tab.name}
           first={index === 0}
           last={index === tabs.length - 1}
-          onPress={() => navigate('Places')}
+          onPress={() => {}}
+          selected={selected}
+          onSelectCategory={onSelectCategory}
         />
       ))}
     </ScrollView>
