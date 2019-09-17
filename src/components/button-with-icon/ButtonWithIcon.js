@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
-import { Text, View, ActivityIndicator } from 'react-native';
-import Animated from 'react-native-reanimated';
+import { Text, View, ActivityIndicator, Animated } from 'react-native';
+// import Animated from 'react-native-reanimated';
 import { Button } from 'native-base';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -30,10 +30,10 @@ const ButtonWithIcon = ({ onPress, loading, buttonText, color, icon }) => {
       <Button
         block
         onPressIn={() => {
-          // useButtonPressedAnimation(animation);
+          useButtonPressedAnimation(animation);
         }}
         onPressOut={() => {
-          // useButtonReleasedAnimation(animation);
+          useButtonReleasedAnimation(animation);
           return onPress();
         }}
         style={{

@@ -342,12 +342,15 @@ const AuthScreen = () => {
               value={email}
               onChangeText={value => setEmail(value)}
               placeholder="Email"
+              dark
+              spacing
             />
             <TextInputField
               value={password}
               onChangeText={value => setPassword(value)}
               placeholder="Password"
               secureTextEntry
+              dark
             />
             <ButtonStandard
               text="Log In"
@@ -386,12 +389,16 @@ const AuthScreen = () => {
               value={values.email}
               onChangeText={value => setValues({ ...values, email: value })}
               placeholder="Email"
+              dark
+              spacing
             />
             <TextInputField
               value={values.password}
               onChangeText={value => setValues({ ...values, password: value })}
               placeholder="Password"
               secureTextEntry
+              dark
+              spacing
             />
             <TextInputField
               value={values.confirmPassword}
@@ -400,6 +407,7 @@ const AuthScreen = () => {
               }
               placeholder="Confirm password"
               secureTextEntry
+              dark
             />
             <ButtonStandard
               text="Continue"

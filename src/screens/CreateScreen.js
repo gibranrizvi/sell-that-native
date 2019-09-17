@@ -12,7 +12,8 @@ import {
   ActivityIndicator,
   TouchableWithoutFeedback,
   Keyboard,
-  StatusBar
+  StatusBar,
+  Button
 } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
@@ -21,6 +22,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 // Local imports
 import layout from '../constants/layout';
+import { FirebaseContext } from '../firebase';
 
 // Component imports
 import Heading from '../components/heading/Heading';
@@ -33,15 +35,22 @@ const IS_IPHONE_X = height === 812 || height === 896;
 const STATUS_BAR_HEIGHT = Constants.statusBarHeight;
 
 const CreateScreen = () => {
-  const [category, setCategory] = React.useState('');
+  const { auth } = React.useContext(FirebaseContext);
+
   const [title, setTitle] = React.useState('');
+  const [category, setCategory] = React.useState('');
+  const [price, setPrice] = React.useState(null);
+  const [condition, setCondition] = React.useState('');
 
   return (
     <SafeAreaView style={styles.root}>
-      <View style={styles.headingView}>
-        <Heading title="What are you selling?" subtitle="Enter some details" />
-      </View>
       <ScrollView contentContainerStyle={styles.bodyScrollView}>
+        <View style={styles.headingView}>
+          <Heading
+            title="What are you selling?"
+            subtitle="Enter some details"
+          />
+        </View>
         {/* Product title */}
         <View style={styles.sectionView}>
           <Text style={styles.subHeadingText}>Title</Text>
@@ -73,24 +82,50 @@ const CreateScreen = () => {
             onSelectCategory={value => setCategory(value)}
           />
         </View>
+
+        {/* Product price */}
+        <View style={styles.sectionView}>
+          <Text style={styles.subHeadingText}>Price</Text>
+          <View style={styles.formFieldsView}>
+            <TextInputField
+              value={price}
+              onChangeText={value => setPrice(value)}
+              placeholder="SR 99.99"
+            />
+          </View>
+        </View>
+
+        {/* Product title */}
+        <View style={styles.sectionView}>
+          <Text style={styles.subHeadingText}>Condition</Text>
+          <View style={styles.formFieldsView}>
+            <TextInputField
+              value={condition}
+              onChangeText={value => setCondition(value)}
+              placeholder="Select condition"
+            />
+          </View>
+        </View>
+
+        <Button
+          title="Sign Out"
+          color="orangered"
+          onPress={() => auth.signOut()}
+        />
       </ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  root: {
-    backgroundColor: 'white'
-  },
+  root: { flex: 1, justifyContent: 'center', backgroundColor: 'white' },
   headingView: {
     marginHorizontal: 12,
     justifyContent: 'center'
   },
-  bodyScrollView: {
-    marginVertical: 12
-  },
+  bodyScrollView: { marginVertical: 12 },
   sectionView: {
-    marginVertical: 8
+    marginVertical: 2
   },
   subHeadingText: {
     marginHorizontal: 12,

@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, Animated } from 'react-native';
 import { Button } from 'native-base';
-import Animated from 'react-native-reanimated';
+// import Animated from 'react-native-reanimated';
 
 // Hook imports
 import {
@@ -35,10 +35,10 @@ const ButtonStandard = ({ disabled, loading, text, onPress }) => {
           backgroundColor: disabled ? 'lightslategrey' : 'slateblue'
         }}
         onPressIn={() => {
-          // useButtonPressedAnimation(animation);
+          useButtonPressedAnimation(animation);
         }}
         onPressOut={() => {
-          // useButtonReleasedAnimation(animation);
+          useButtonReleasedAnimation(animation);
           return onPress();
         }}
         disabled={disabled}
