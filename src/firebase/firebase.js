@@ -107,6 +107,8 @@ export const createPostDocument = async (postData, currentUser) => {
   if (!snapshot.exists) {
     // Create new post
     const sold = false;
+    const likes = [];
+    const comments = [];
     const created_at = Date.now();
     const created_by = currentUser;
 
@@ -114,6 +116,8 @@ export const createPostDocument = async (postData, currentUser) => {
       await postDocRef.set({
         ...postData,
         sold,
+        likes,
+        comments,
         created_at,
         created_by
       });

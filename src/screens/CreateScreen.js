@@ -57,7 +57,8 @@ const CreateScreen = ({ navigation }) => {
       images: [
         'https://pazzion.shopcadacdn.com/sites/files/pazzion/productimg/201904/pazzion_3723_handbag_blue_back_view.jpg',
         'https://pazzion.shopcadacdn.com/sites/files/pazzion/productimg/201904/pazzion_3723_handbag_blue_front_view_2.jpg'
-      ]
+      ],
+      description
     };
 
     createPostDocument(newPost, user).then(() => {
