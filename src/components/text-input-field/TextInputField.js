@@ -14,7 +14,7 @@ export default ({
       style={{
         ...styles.textInputView,
         marginBottom: spacing && 6,
-        backgroundColor: dark ? '#444' : '#FEFEFE'
+        backgroundColor: dark ? '#444' : '#FAFAFA'
       }}
     >
       <TextInput
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   textInputView: {
     flexDirection: 'row',
     padding: 8,
-    shadowRadius: 6,
+    shadowRadius: 12,
     shadowOffset: { width: 0, height: 0 },
     shadowColor: 'grey',
     shadowOpacity: 0.2,

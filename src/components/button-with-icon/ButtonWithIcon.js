@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import { Text, View, ActivityIndicator, Animated } from 'react-native';
-// import Animated from 'react-native-reanimated';
 import { Button } from 'native-base';
 import { FontAwesome } from '@expo/vector-icons';
+// import Animated from 'react-native-reanimated';
 
 // Hook imports
 import {

@@ -5,10 +5,10 @@ import {
   createBottomTabNavigator
 } from 'react-navigation';
 
-import TabBarIcon from '../components/tab-bar-icon/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import CreateScreen from '../screens/CreateScreen';
 import InboxScreen from '../screens/InboxScreen';
+import TabBarIcon from '../components/tab-bar-icon/TabBarIcon';
 import TabBarIconWithBadge from '../components/tab-bar-icon-with-badge/TabBarIconWithBadge';
 
 const config = Platform.select({

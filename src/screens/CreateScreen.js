@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import {
   Platform,
   StyleSheet,
@@ -13,12 +13,13 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   StatusBar,
-  Button
+  Button,
+  Animated
 } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
-import Animated from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
+// import Animated from 'react-native-reanimated';
 
 // Local imports
 import layout from '../constants/layout';
@@ -28,6 +29,8 @@ import { FirebaseContext } from '../firebase';
 import Heading from '../components/heading/Heading';
 import CategoryTabScrollView from '../components/category-tab-scroll-view/CategoryTabScrollView';
 import TextInputField from '../components/text-input-field/TextInputField';
+import ButtonStandard from '../components/button-standard/ButtonStandard';
+import { createPostDocument } from '../firebase/firebase';
 
 // Constants
 const { height, width } = layout.window;
@@ -35,12 +38,30 @@ const IS_IPHONE_X = height === 812 || height === 896;
 const STATUS_BAR_HEIGHT = Constants.statusBarHeight;
 
 const CreateScreen = () => {
-  const { auth } = React.useContext(FirebaseContext);
+  const { auth, user } = useContext(FirebaseContext);
 
-  const [title, setTitle] = React.useState('');
-  const [category, setCategory] = React.useState('');
-  const [price, setPrice] = React.useState(null);
-  const [condition, setCondition] = React.useState('');
+  const [title, setTitle] = useState('');
+  const [category, setCategory] = useState('');
+  const [price, setPrice] = useState(null);
+  const [condition, setCondition] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const submitPost = () => {
+    setLoading(true);
+
+    const newPost = {
+      title,
+      price,
+      category,
+      condition,
+      images: [
+        'https://pazzion.shopcadacdn.com/sites/files/pazzion/productimg/201904/pazzion_3723_handbag_blue_back_view.jpg',
+        'https://pazzion.shopcadacdn.com/sites/files/pazzion/productimg/201904/pazzion_3723_handbag_blue_front_view_2.jpg'
+      ]
+    };
+
+    const postDocRef = createPostDocument(newPost, user);
+  };
 
   return (
     <SafeAreaView style={styles.root}>
@@ -51,6 +72,7 @@ const CreateScreen = () => {
             subtitle="Enter some details"
           />
         </View>
+
         {/* Product title */}
         <View style={styles.sectionView}>
           <Text style={styles.subHeadingText}>Title</Text>
@@ -107,6 +129,16 @@ const CreateScreen = () => {
           </View>
         </View>
 
+        {/* Submit button */}
+        <View style={{ ...styles.sectionView, marginHorizontal: 12 }}>
+          <ButtonStandard
+            text="Submit"
+            onPress={() => submitPost()}
+            loading={loading}
+            disabled={!title || !price}
+          />
+        </View>
+
         <Button
           title="Sign Out"
           color="orangered"
@@ -123,7 +155,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     justifyContent: 'center'
   },
-  bodyScrollView: { marginVertical: 12 },
+  bodyScrollView: { marginVertical: 12, paddingBottom: 80 },
   sectionView: {
     marginVertical: 2
   },

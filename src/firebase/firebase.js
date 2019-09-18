@@ -98,6 +98,43 @@ export const createUserProfileDocument = async ({
   return userRef;
 };
 
+// Create or update a post
+export const createPostDocument = async (postData, currentUser) => {
+  const postsRef = firestore.collection('posts');
+  const postDocRef = postsRef.doc();
+  const snapshot = await postDocRef.get();
+
+  if (!snapshot.exists) {
+    // Create new post
+    const created_at = Date.now();
+    const created_by = currentUser;
+
+    try {
+      await postDocRef.set({
+        ...postData,
+        created_at,
+        created_by
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  } else {
+    // Update post
+    const last_updated_at = Date.now();
+
+    try {
+      await postDocRef.update({
+        ...postData,
+        last_updated_at
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  return postDocRef;
+};
+
 firebase.initializeApp(firebaseConfig);
 
 export const auth = firebase.auth();
