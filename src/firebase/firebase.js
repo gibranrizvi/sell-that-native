@@ -106,12 +106,14 @@ export const createPostDocument = async (postData, currentUser) => {
 
   if (!snapshot.exists) {
     // Create new post
+    const sold = false;
     const created_at = Date.now();
     const created_by = currentUser;
 
     try {
       await postDocRef.set({
         ...postData,
+        sold,
         created_at,
         created_by
       });

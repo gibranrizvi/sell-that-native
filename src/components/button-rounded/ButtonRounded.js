@@ -7,7 +7,15 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const ButtonRounded = ({ onPress, type, icon, color, image, size }) => {
+const ButtonRounded = ({
+  onPress,
+  type,
+  icon,
+  color,
+  image,
+  size,
+  noShadow
+}) => {
   const renderImage = () => {
     return (
       <Image
@@ -32,7 +40,8 @@ const ButtonRounded = ({ onPress, type, icon, color, image, size }) => {
           ...styles.touchableView,
           height: size,
           width: size,
-          borderRadius: size / 4
+          borderRadius: size / 4,
+          shadowRadius: noShadow ? 0 : 12
         }}
       >
         {type === 'image' && renderImage()}
@@ -52,10 +61,9 @@ const ButtonRounded = ({ onPress, type, icon, color, image, size }) => {
 const styles = StyleSheet.create({
   touchableView: {
     justifyContent: 'center',
-    shadowColor: 'black',
+    shadowColor: 'grey',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.6,
-    shadowRadius: 20,
+    shadowOpacity: 0.4,
     backgroundColor: 'white',
     elevation: 20
   },

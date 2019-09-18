@@ -20,7 +20,8 @@ export default function App(props) {
     last_name: 'Rizvi',
     profile_picture:
       'https://lh3.googleusercontent.com/a-/AAuE7mDMPtoVJsw1jRawYMyhJCMmqHbzImq1zjHf6HBT=s96-c',
-    role: 'subscriber'
+    role: 'subscriber',
+    address: 'Anse aux Pins'
   };
   console.log(user);
 

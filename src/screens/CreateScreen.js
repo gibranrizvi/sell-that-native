@@ -37,7 +37,7 @@ const { height, width } = layout.window;
 const IS_IPHONE_X = height === 812 || height === 896;
 const STATUS_BAR_HEIGHT = Constants.statusBarHeight;
 
-const CreateScreen = () => {
+const CreateScreen = ({ navigation }) => {
   const { auth, user } = useContext(FirebaseContext);
 
   const [title, setTitle] = useState('');
@@ -51,8 +51,8 @@ const CreateScreen = () => {
 
     const newPost = {
       title,
-      price,
       category,
+      price,
       condition,
       images: [
         'https://pazzion.shopcadacdn.com/sites/files/pazzion/productimg/201904/pazzion_3723_handbag_blue_back_view.jpg',
@@ -60,7 +60,14 @@ const CreateScreen = () => {
       ]
     };
 
-    const postDocRef = createPostDocument(newPost, user);
+    createPostDocument(newPost, user).then(() => {
+      setTitle('');
+      setCategory('');
+      setPrice(null);
+      setCondition('');
+      setLoading(false);
+      return navigation.navigate('Home');
+    });
   };
 
   return (
@@ -92,12 +99,12 @@ const CreateScreen = () => {
             tabs={[
               { name: 'Electronics' },
               { name: 'Services' },
+              { name: 'Clothing & Accessories' },
               { name: 'Vehicles' },
-              { name: 'Fashion' },
               { name: 'Health & Beauty' },
+              { name: 'Real Estate' },
               { name: 'Home & Garden' },
               { name: 'Sports' },
-              { name: 'Property' },
               { name: 'Miscellaneous' }
             ]}
             selected={category}
@@ -112,7 +119,7 @@ const CreateScreen = () => {
             <TextInputField
               value={price}
               onChangeText={value => setPrice(value)}
-              placeholder="SR 99.99"
+              placeholder="SR 0.00"
             />
           </View>
         </View>
@@ -139,11 +146,11 @@ const CreateScreen = () => {
           />
         </View>
 
-        <Button
+        {/* <Button
           title="Sign Out"
           color="orangered"
           onPress={() => auth.signOut()}
-        />
+        /> */}
       </ScrollView>
     </SafeAreaView>
   );

@@ -21,7 +21,7 @@ const Header = ({ navigation }) => {
 
   return (
     <View
-      onLayout={({ nativeEvent }) => console.log(nativeEvent)}
+      // onLayout={({ nativeEvent }) => console.log(nativeEvent)}
       style={styles.headerView}
     >
       <LogoText style={styles.headerTitleText}>Sell that</LogoText>

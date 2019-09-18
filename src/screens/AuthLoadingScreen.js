@@ -23,7 +23,11 @@ const AuthLoadingScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <StatusBar hidden />
-      <ActivityIndicator size="small" color="black" />
+      <ActivityIndicator
+        size="small"
+        color="black"
+        style={{ marginBottom: 8 }}
+      />
       <MonoText>Launching</MonoText>
     </View>
   );
