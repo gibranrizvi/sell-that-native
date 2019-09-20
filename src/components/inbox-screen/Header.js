@@ -24,7 +24,6 @@ const Header = ({ navigation }) => {
         <View style={styles.profileActionView}>
           <ButtonRounded
             onPress={() => navigate('Profile')}
-            type="image"
             image={user.profile_picture}
             size={32}
           />

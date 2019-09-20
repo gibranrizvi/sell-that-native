@@ -7,21 +7,13 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const ButtonRounded = ({
-  onPress,
-  type,
-  icon,
-  color,
-  image,
-  size,
-  noShadow
-}) => {
+const ButtonRounded = ({ onPress, image, size, noShadow }) => {
   const renderImage = () => {
     return (
       <Image
         source={
           image === 'default'
-            ? require('../../../assets/images/robot-prod.png')
+            ? require('../../../assets/images/robot-dev.png')
             : { uri: image }
         }
         style={[
@@ -44,15 +36,7 @@ const ButtonRounded = ({
           shadowRadius: noShadow ? 0 : 12
         }}
       >
-        {type === 'image' && renderImage()}
-        {type === 'icon' && (
-          <Ionicons
-            name={icon}
-            size={size / 1.6}
-            color={color}
-            style={{ alignSelf: 'center', paddingTop: 2 }}
-          />
-        )}
+        {renderImage()}
       </View>
     </TouchableWithoutFeedback>
   ) : null;

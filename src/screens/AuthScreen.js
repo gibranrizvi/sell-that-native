@@ -81,7 +81,8 @@ const AuthScreen = () => {
         .auth()
         .createUserWithEmailAndPassword(email, password);
 
-      const { uid } = user;
+      const { uid, emailVerified } = user;
+      const role = 'subscriber';
 
       if (pictureURI) {
         return await uploadProfilePicture(
@@ -89,7 +90,9 @@ const AuthScreen = () => {
           email,
           firstName,
           lastName,
-          pictureURI
+          pictureURI,
+          emailVerified,
+          role
         );
       }
 
@@ -98,7 +101,9 @@ const AuthScreen = () => {
         email,
         first_name: firstName,
         last_name: lastName,
-        profile_picture: 'default'
+        profile_picture: 'default',
+        emailVerified,
+        role
       };
 
       return await createUserProfileDocument(userData);
@@ -119,6 +124,13 @@ const AuthScreen = () => {
   // Function 2: Handle Email Password sign in press
   const _signInPressed = async (email, password) => {
     setLoading(true);
+
+    return _onSignIn({
+      provider: SignInProviders.EmailAndPassword,
+      token: null,
+      email,
+      password
+    });
   };
 
   // Function 3: Handle Facebook sign in button press
@@ -130,6 +142,12 @@ const AuthScreen = () => {
     );
 
     if (result.type === 'success') {
+      return _onSignIn({
+        provider: SignInProviders.Facebook,
+        token: result.token,
+        email: null,
+        password: null
+      });
     } else {
       return setFacebookLoading(false);
     }

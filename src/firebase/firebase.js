@@ -10,7 +10,8 @@ export const uploadProfilePicture = async (
   email,
   firstName,
   lastName,
-  pictureURI
+  pictureURI,
+  role
 ) => {
   const storageRef = firebase.storage().ref();
   const pictureRef = storageRef.child(
@@ -43,7 +44,9 @@ export const uploadProfilePicture = async (
       email,
       first_name: firstName,
       last_name: lastName,
-      profile_picture: downloadURL
+      profile_picture: downloadURL,
+      emailVerified,
+      role
     };
 
     return await createUserProfileDocument(userData);
@@ -52,6 +55,7 @@ export const uploadProfilePicture = async (
   }
 };
 
+// TODO add address field
 export const createUserProfileDocument = async ({
   uid,
   email,

@@ -44,6 +44,7 @@ const CreateScreen = ({ navigation }) => {
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState(null);
   const [condition, setCondition] = useState('');
+  const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
 
   const submitPost = () => {
@@ -54,11 +55,12 @@ const CreateScreen = ({ navigation }) => {
       category,
       price,
       condition,
+      description:
+        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus rem doloribus, adipisci pariatur sint ipsum voluptatem neque amet.',
       images: [
         'https://pazzion.shopcadacdn.com/sites/files/pazzion/productimg/201904/pazzion_3723_handbag_blue_back_view.jpg',
         'https://pazzion.shopcadacdn.com/sites/files/pazzion/productimg/201904/pazzion_3723_handbag_blue_front_view_2.jpg'
-      ],
-      description
+      ]
     };
 
     createPostDocument(newPost, user).then(() => {
@@ -66,6 +68,7 @@ const CreateScreen = ({ navigation }) => {
       setCategory('');
       setPrice(null);
       setCondition('');
+      setDescription('');
       setLoading(false);
       return navigation.navigate('Home');
     });
@@ -125,7 +128,7 @@ const CreateScreen = ({ navigation }) => {
           </View>
         </View>
 
-        {/* Product title */}
+        {/* Product condition */}
         <View style={styles.sectionView}>
           <Text style={styles.subHeadingText}>Condition</Text>
           <View style={styles.formFieldsView}>
@@ -133,6 +136,18 @@ const CreateScreen = ({ navigation }) => {
               value={condition}
               onChangeText={value => setCondition(value)}
               placeholder="Select condition"
+            />
+          </View>
+        </View>
+
+        {/* Product description */}
+        <View style={styles.sectionView}>
+          <Text style={styles.subHeadingText}>Description</Text>
+          <View style={styles.formFieldsView}>
+            <TextInputField
+              value={description}
+              onChangeText={value => setDescription(value)}
+              placeholder="Add a description"
             />
           </View>
         </View>
@@ -146,12 +161,6 @@ const CreateScreen = ({ navigation }) => {
             disabled={!title || !price}
           />
         </View>
-
-        {/* <Button
-          title="Sign Out"
-          color="orangered"
-          onPress={() => auth.signOut()}
-        /> */}
       </ScrollView>
     </SafeAreaView>
   );
@@ -173,7 +182,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
     fontWeight: '500',
     color: 'black',
-    fontSize: 18
+    fontSize: 14
   },
   categoryScrollView: {
     marginVertical: 8

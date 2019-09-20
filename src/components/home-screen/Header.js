@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { format } from 'date-fns';
 import Constants from 'expo-constants';
 
@@ -10,13 +10,15 @@ import layout from '../../constants/layout';
 // Component imports
 import { LogoText } from '../styled-text/StyledText';
 import ButtonRounded from '../button-rounded/ButtonRounded';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Ionicons } from '@expo/vector-icons';
 
 const { height, width } = layout.window;
 const STATUS_BAR_HEIGHT = Constants.statusBarHeight;
 const IS_IPHONE_X = height === 812 || height === 896;
 
 const Header = ({ navigation }) => {
-  const { user } = useContext(FirebaseContext);
+  const { user, auth } = useContext(FirebaseContext);
   const { navigate } = navigation;
 
   return (
@@ -25,16 +27,22 @@ const Header = ({ navigation }) => {
       style={styles.headerView}
     >
       <LogoText style={styles.headerTitleText}>Sell that</LogoText>
-      {user && user.profile_picture && (
-        <View style={styles.profileActionView}>
+      <View style={styles.profileActionView}>
+        {user && user.profile_picture ? (
           <ButtonRounded
             onPress={() => navigate('Profile')}
-            type="image"
             image={user.profile_picture}
             size={36}
           />
-        </View>
-      )}
+        ) : (
+          <ActivityIndicator color="#333" />
+        )}
+      </View>
+      <View style={styles.headerRightView}>
+        <TouchableOpacity onPress={() => auth.signOut()}>
+          <Ionicons name="md-exit" size={32} color="#333" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -68,6 +76,16 @@ const styles = StyleSheet.create({
     paddingTop: STATUS_BAR_HEIGHT,
     top: 0,
     left: 0,
+    bottom: 0,
+    width: width / 6
+  },
+  headerRightView: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: STATUS_BAR_HEIGHT,
+    top: 0,
+    right: 0,
     bottom: 0,
     width: width / 6
   }

@@ -59,7 +59,7 @@ const HomeScreen = ({ navigation }) => {
     //   });
     setPosts([
       {
-        category: 'Fashion',
+        category: 'Clothing & Accessories',
         condition: 'Brand new',
         created_at: 1568766697534,
         created_by: {
@@ -79,9 +79,9 @@ const HomeScreen = ({ navigation }) => {
           'https://pazzion.shopcadacdn.com/sites/files/pazzion/productimg/201904/pazzion_3723_handbag_blue_back_view.jpg',
           'https://pazzion.shopcadacdn.com/sites/files/pazzion/productimg/201904/pazzion_3723_handbag_blue_front_view_2.jpg'
         ],
-        price: '112',
+        price: '1199.99',
         sold: false,
-        title: 'Handbag',
+        title: 'Blue Pazzion Handbag',
         description:
           'Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore quaerat dolorem magni dolores quae quis ut odit eos eveniet! Quis non deserunt modi nostrum fugit, animi reiciendis necessitatibus quam assumenda.',
         likes: [
@@ -99,7 +99,6 @@ const HomeScreen = ({ navigation }) => {
         ]
       }
     ]);
-
     const unsubscribe = () => {};
 
     return unsubscribe;
@@ -139,6 +138,8 @@ const HomeScreen = ({ navigation }) => {
               likes,
               comments,
               title,
+              price,
+              condition,
               description
             }) => (
               <View
@@ -165,7 +166,6 @@ const HomeScreen = ({ navigation }) => {
                   <View style={{ flex: 1 }}>
                     <ButtonRounded
                       onPress={() => push('Profile')}
-                      type="image"
                       image={created_by.profile_picture}
                       size={32}
                       noShadow
@@ -179,7 +179,10 @@ const HomeScreen = ({ navigation }) => {
                         marginBottom: 2
                       }}
                     >
-                      {`${created_by.first_name} ${created_by.last_name}`}
+                      {`${created_by.first_name} ${created_by.last_name}`}{' '}
+                      <Text style={{ fontWeight: 'normal', color: 'grey' }}>
+                        posted {formatDistanceToNow(created_at)} ago
+                      </Text>
                     </Text>
                     <Text style={{ fontSize: 12 }}>{created_by.address}</Text>
                   </View>
@@ -222,7 +225,7 @@ const HomeScreen = ({ navigation }) => {
                     }}
                   >
                     <View style={{ flex: 1 }}>
-                      {checkIfLiked(likes) ? (
+                      {user && checkIfLiked(likes) ? (
                         <Ionicons
                           name="ios-heart"
                           color="orangered"
@@ -256,13 +259,11 @@ const HomeScreen = ({ navigation }) => {
                   <Text
                     style={{ fontWeight: '600', fontSize: 12, marginBottom: 2 }}
                   >
-                    {title}{' '}
-                    <Text style={{ fontWeight: 'normal', color: 'grey' }}>
-                      posted {formatDistanceToNow(created_at)} ago
-                    </Text>
+                    {title} - SR {price}
                   </Text>
                   <Text style={{ fontSize: 12, marginBottom: 4 }}>
-                    {description}
+                    {condition} -{' '}
+                    <Text style={{ fontStyle: 'italic' }}>{description}</Text>
                   </Text>
                   <Text style={{ fontSize: 12, color: 'grey' }}>
                     Read {comments.length} comment{comments.length !== 1 && 's'}

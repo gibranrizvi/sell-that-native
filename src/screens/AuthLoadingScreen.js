@@ -10,13 +10,15 @@ import { MonoText } from '../components/styled-text/StyledText';
 const AuthLoadingScreen = ({ navigation }) => {
   const { auth } = useContext(FirebaseContext);
 
+  const { navigate } = navigation;
+
   useEffect(() => {
     isAuthenticated();
   }, []);
 
   const isAuthenticated = () => {
     auth.onAuthStateChanged(user => {
-      return user ? navigation.navigate('Home') : navigation.navigate('Auth');
+      return user ? navigate('Home') : navigate('Auth');
     });
   };
 

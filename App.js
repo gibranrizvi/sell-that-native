@@ -10,19 +10,20 @@ import { FirebaseContext, auth, firestore } from './src/firebase';
 import useAuth from './src/hooks/useAuth';
 
 export default function App(props) {
-  // TODO replace const user = useAuth();
-  const user = {
-    created_at: 1568142656131,
-    email: 'gibranrzv@gmail.com',
-    emailVerified: true,
-    first_name: 'Gibran',
-    id: 'bqFXaaLx8qcPCEH9ddHO5XBqc282',
-    last_name: 'Rizvi',
-    profile_picture:
-      'https://lh3.googleusercontent.com/a-/AAuE7mDMPtoVJsw1jRawYMyhJCMmqHbzImq1zjHf6HBT=s96-c',
-    role: 'subscriber',
-    address: 'Anse aux Pins'
-  };
+  // TODO replace
+  const user = useAuth();
+  // const user = {
+  //   created_at: 1568142656131,
+  //   email: 'gibranrzv@gmail.com',
+  //   emailVerified: true,
+  //   first_name: 'Gibran',
+  //   id: 'bqFXaaLx8qcPCEH9ddHO5XBqc282',
+  //   last_name: 'Rizvi',
+  //   profile_picture:
+  //     'https://lh3.googleusercontent.com/a-/AAuE7mDMPtoVJsw1jRawYMyhJCMmqHbzImq1zjHf6HBT=s96-c',
+  //   role: 'subscriber',
+  //   address: 'Anse aux Pins'
+  // };
   console.log(user);
 
   const [isLoadingComplete, setLoadingComplete] = useState(false);
