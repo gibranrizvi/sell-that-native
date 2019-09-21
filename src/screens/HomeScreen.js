@@ -70,13 +70,12 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const likeOrUnlikePost = (postId, likes, postLiked) => {
-    // Find post doc ref
     const postsRef = firestore.collection('posts');
     const postRef = postsRef.doc(`${postId}`);
 
     let updatedLikes;
 
-    // if postLiked, remove like object from post document
+    // if user has already liked this post, remove like object from post document
     if (postLiked) {
       updatedLikes = likes.filter(({ liked_by }) => liked_by.id !== user.id);
     } else {
@@ -116,12 +115,24 @@ const HomeScreen = ({ navigation }) => {
     });
   };
 
+  // TODO add swipe down gesture to close overlay
+
   const closePost = () => {
     setSelectedPost(null);
     setPostOverlayExpanded(false);
   };
 
   const renderPosts = () => {
+    if (posts.length === 0) {
+      return (
+        <View
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        >
+          <MonoText>No posts found</MonoText>
+        </View>
+      );
+    }
+
     return posts.map(
       (
         {
@@ -147,75 +158,65 @@ const HomeScreen = ({ navigation }) => {
             key={id}
             ref={post => (postRefs[index] = post)}
             style={{
-              flex: 1,
               marginTop: 12,
               shadowColor: 'grey',
               shadowRadius: 12,
               shadowOpacity: 0.2,
               backgroundColor: 'white',
-              top: postSelected ? postPosition : 0
+              transform: [{ translateY: postSelected ? postPosition : 0 }]
             }}
           >
-            {/* Overlay */}
-            <View
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                height: postSelected ? postHeight : 0,
-                backgroundColor: 'white'
-              }}
-            ></View>
-
-            {/* Post header */}
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingVertical: 8,
-                paddingHorizontal: 12
-              }}
-            >
-              <View style={{ flex: 1 }}>
-                <ButtonRounded
-                  onPress={() => push('Profile')}
-                  image={created_by.profile_picture}
-                  size={32}
-                  noShadow
-                />
-              </View>
-              <View style={{ flex: 7, justifyContent: 'space-between' }}>
-                <Text
-                  style={{
-                    fontWeight: '600',
-                    fontSize: 12,
-                    marginBottom: 2
-                  }}
-                >
-                  {`${created_by.first_name} ${created_by.last_name}`}{' '}
-                  <Text style={{ fontWeight: 'normal', color: 'grey' }}>
-                    posted {formatDistanceToNow(created_at)} ago
+            <ScrollView scrollEnabled={postOverlayExpanded}>
+              {/* Post header */}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingVertical: 8,
+                  paddingHorizontal: 12
+                }}
+              >
+                <View style={{ flex: 1 }}>
+                  <ButtonRounded
+                    onPress={() => push('Profile')}
+                    image={created_by.profile_picture}
+                    size={32}
+                    noShadow
+                  />
+                </View>
+                <View style={{ flex: 7, justifyContent: 'space-between' }}>
+                  <Text
+                    style={{
+                      fontWeight: '600',
+                      fontSize: 12,
+                      marginBottom: 2
+                    }}
+                  >
+                    {`${created_by.first_name} ${created_by.last_name}`}{' '}
+                    <Text style={{ fontWeight: 'normal', color: 'grey' }}>
+                      posted {formatDistanceToNow(created_at)} ago
+                    </Text>
                   </Text>
-                </Text>
-                <Text style={{ fontSize: 12 }}>{created_by.address}</Text>
+                  <Text style={{ fontSize: 12 }}>{created_by.address}</Text>
+                </View>
+                <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                  {postOverlayExpanded && postSelected ? (
+                    <TouchableOpacity onPress={() => closePost()}>
+                      <Ionicons name="ios-arrow-down" color="#555" size={28} />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={() => {
+                        // TODO open dialog modal with options for contact seller, report post
+                      }}
+                    >
+                      <Ionicons name="ios-more" color="#555" size={28} />
+                    </TouchableOpacity>
+                  )}
+                </View>
               </View>
-              <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                {postOverlayExpanded && postSelected ? (
-                  <TouchableOpacity onPress={() => closePost()}>
-                    <Ionicons name="ios-arrow-down" color="#555" size={28} />
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity onPress={() => openPost(id, index)}>
-                    <Ionicons name="ios-more" color="#555" size={28} />
-                  </TouchableOpacity>
-                )}
-              </View>
-            </View>
 
-            {/* Post image carousel */}
-            <View style={{ flex: 6 }}>
+              {/* Post image carousel */}
               <ScrollView horizontal pagingEnabled>
                 {images.map((image, index) => (
                   <View key={index} style={{ height: 240, width }}>
@@ -230,104 +231,147 @@ const HomeScreen = ({ navigation }) => {
                   </View>
                 ))}
               </ScrollView>
-            </View>
 
-            {/* Post actions */}
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingVertical: 8,
-                paddingHorizontal: 12
-              }}
-            >
-              {user && (
+              {/* Post actions */}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingVertical: 8,
+                  paddingHorizontal: 12
+                }}
+              >
+                {user && (
+                  <View style={{ flex: 1 }}>
+                    <TouchableOpacity
+                      onPress={() => likeOrUnlikePost(id, likes, postLiked)}
+                    >
+                      <View style={{ flex: 1 }}>
+                        {postLiked ? (
+                          <Ionicons
+                            name="ios-heart"
+                            color="orangered"
+                            size={28}
+                          />
+                        ) : (
+                          <Ionicons
+                            name="ios-heart-empty"
+                            color="grey"
+                            size={28}
+                          />
+                        )}
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                )}
                 <View style={{ flex: 1 }}>
                   <TouchableOpacity
-                    onPress={() => likeOrUnlikePost(id, likes, postLiked)}
+                    onPress={() => {
+                      // TODO write a comment
+                      postOverlayExpanded
+                        ? {
+                            /* TODO focus comment field and show keyboard */
+                          }
+                        : openPost(id, index);
+                    }}
                   >
                     <View style={{ flex: 1 }}>
-                      {postLiked ? (
-                        <Ionicons
-                          name="ios-heart"
-                          color="orangered"
-                          size={28}
-                        />
-                      ) : (
-                        <Ionicons
-                          name="ios-heart-empty"
-                          color="#555"
-                          size={28}
-                        />
-                      )}
+                      <Ionicons
+                        name="ios-chatbubbles"
+                        color={postOverlayExpanded ? '#333' : 'grey'}
+                        size={28}
+                      />
                     </View>
                   </TouchableOpacity>
                 </View>
-              )}
-              <View style={{ flex: 1 }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    // TODO write a comment
-                    openPost(id, index);
-                  }}
-                >
-                  <View style={{ flex: 1 }}>
-                    <Ionicons name="ios-chatbubbles" color="#333" size={28} />
-                  </View>
-                </TouchableOpacity>
+                <View style={{ flex: 8 }} />
               </View>
-              <View style={{ flex: 8 }} />
-            </View>
 
-            {/* Post information */}
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                paddingBottom: 8,
-                paddingHorizontal: 12
-              }}
-            >
-              <Text style={{ fontSize: 12, color: 'grey', marginBottom: 4 }}>
-                {likes.length} heart{likes.length !== 1 && 's'}
-              </Text>
-              <Text
-                style={{ fontWeight: '600', fontSize: 12, marginBottom: 4 }}
-              >
-                {title} - SR {price}
-              </Text>
-              <Text style={{ fontSize: 12, marginBottom: 4 }}>
-                {condition} in{' '}
-                <Text style={{ fontStyle: 'italic' }}>{category}</Text>
-              </Text>
-              <Text
-                style={{ fontWeight: '600', fontSize: 12, marginBottom: 4 }}
-              >
-                {`${created_by.first_name} ${created_by.last_name}`}{' '}
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontStyle: 'italic',
-                    fontWeight: 'normal',
-                    marginBottom: 4
-                  }}
-                >
-                  {description}
-                </Text>
-              </Text>
-              <Text style={{ fontSize: 12, color: 'grey' }}>
-                Read {comments.length} comment{comments.length !== 1 && 's'}
-              </Text>
-            </View>
-            {postSelected && (
+              {/* Post information */}
               <View
                 style={{
-                  backgroundColor: 'white',
-                  height: height - postHeight
+                  paddingBottom: 8,
+                  paddingHorizontal: 12
                 }}
-              ></View>
-            )}
+              >
+                <Text style={{ fontSize: 12, color: 'grey', marginBottom: 4 }}>
+                  {likes.length} heart{likes.length !== 1 && 's'}
+                </Text>
+                <Text
+                  style={{ fontWeight: '600', fontSize: 12, marginBottom: 4 }}
+                >
+                  {title} - SR {price}
+                </Text>
+                <Text style={{ fontSize: 12, marginBottom: 4 }}>
+                  {condition} in{' '}
+                  <Text style={{ fontStyle: 'italic' }}>{category}</Text>
+                </Text>
+                <Text
+                  style={{ fontWeight: '600', fontSize: 12, marginBottom: 4 }}
+                >
+                  {`${created_by.first_name} ${created_by.last_name}`}{' '}
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontStyle: 'italic',
+                      fontWeight: 'normal'
+                    }}
+                  >
+                    {description}
+                  </Text>
+                </Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    postOverlayExpanded
+                      ? {
+                          /* TODO focus comment field and open keyboard*/
+                        }
+                      : openPost(id, index)
+                  }
+                >
+                  <Text
+                    style={{ fontSize: 12, color: 'grey', fontStyle: 'italic' }}
+                  >
+                    {comments.length === 0
+                      ? 'Write a comment...'
+                      : `Show${postOverlayExpanded && 'ing'} ${
+                          comments.length
+                        } comment${comments.length !== 1 && 's'}`}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              {/* Comments area */}
+              {postSelected && (
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    // height: height - postHeight,
+                    paddingHorizontal: 12,
+                    paddingBottom: 12
+                  }}
+                >
+                  <Text>Comment</Text>
+                  <Text>Comment</Text>
+                  <Text>Comment</Text>
+                  <Text>Comment</Text>
+                  <Text>Comment</Text>
+                  <Text>Comment</Text>
+                  <Text>Comment</Text>
+                  <Text>Comment</Text>
+                  <Text>Comment</Text>
+                  <Text>Comment</Text>
+                  <Text>Comment</Text>
+                  <Text>Comment</Text>
+                  <Text>Comment</Text>
+                  <Text>Comment</Text>
+                  <Text>Comment</Text>
+                  <Text>Comment</Text>
+                  <Text>Comment</Text>
+                  <Text>Comment</Text>
+                </View>
+              )}
+            </ScrollView>
           </View>
         );
       }
