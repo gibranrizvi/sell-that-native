@@ -117,14 +117,12 @@ const HomeScreen = ({ navigation }) => {
       const { id, first_name, last_name, profile_picture } = user;
 
       updatedLikes = [
-        likes,
+        ...likes,
         {
           liked_at: Date.now(),
           liked_by: { id, first_name, last_name, profile_picture }
         }
       ];
-
-      return postRef.update({ likes: updatedLikes });
     }
 
     return postRef.update({ likes: updatedLikes });
