@@ -7,6 +7,7 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableWithoutFeedback,
+  TouchableOpacity,
   ActivityIndicator,
   Animated
 } from 'react-native';
@@ -22,7 +23,7 @@ import { FirebaseContext } from '../firebase';
 import Header from '../components/home-screen/Header';
 import { MonoText } from '../components/styled-text/StyledText';
 import ButtonRounded from '../components/button-rounded/ButtonRounded';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import TextInputField from '../components/text-input-field/TextInputField';
 
 // Constants
 const { height, width } = layout.window;
@@ -166,7 +167,13 @@ const HomeScreen = ({ navigation }) => {
               transform: [{ translateY: postSelected ? postPosition : 0 }]
             }}
           >
-            <ScrollView scrollEnabled={postOverlayExpanded}>
+            <ScrollView
+              scrollEnabled={postOverlayExpanded}
+              contentContainerStyle={{
+                paddingBottom: postOverlayExpanded ? 64 : null
+              }}
+              style={{ height: postOverlayExpanded ? height : null }}
+            >
               {/* Post header */}
               <View
                 style={{
@@ -267,7 +274,6 @@ const HomeScreen = ({ navigation }) => {
                 <View style={{ flex: 1 }}>
                   <TouchableOpacity
                     onPress={() => {
-                      // TODO write a comment
                       postOverlayExpanded
                         ? {
                             /* TODO focus comment field and show keyboard */
@@ -330,7 +336,12 @@ const HomeScreen = ({ navigation }) => {
                   }
                 >
                   <Text
-                    style={{ fontSize: 12, color: 'grey', fontStyle: 'italic' }}
+                    style={{
+                      fontSize: 12,
+                      color: 'grey',
+                      fontStyle: 'italic',
+                      alignSelf: 'flex-start'
+                    }}
                   >
                     {comments.length === 0
                       ? 'Write a comment...'
@@ -346,36 +357,53 @@ const HomeScreen = ({ navigation }) => {
                 <View
                   style={{
                     backgroundColor: 'white',
-                    // height: height - postHeight,
                     paddingHorizontal: 12,
-                    paddingBottom: 12
+                    paddingBottom: 16
                   }}
                 >
-                  <Text>Comment</Text>
-                  <Text>Comment</Text>
-                  <Text>Comment</Text>
-                  <Text>Comment</Text>
-                  <Text>Comment</Text>
-                  <Text>Comment</Text>
-                  <Text>Comment</Text>
-                  <Text>Comment</Text>
-                  <Text>Comment</Text>
-                  <Text>Comment</Text>
-                  <Text>Comment</Text>
-                  <Text>Comment</Text>
-                  <Text>Comment</Text>
-                  <Text>Comment</Text>
-                  <Text>Comment</Text>
-                  <Text>Comment</Text>
-                  <Text>Comment</Text>
-                  <Text>Comment</Text>
+                  {renderComments(comments)}
                 </View>
               )}
             </ScrollView>
+            {postOverlayExpanded && (
+              <View
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  right: 0,
+                  bottom: 72
+                }}
+              >
+                <TextInputField
+                  value={commentText}
+                  onChangeText={value => setCommentText(value)}
+                  placeholder="Write a comment..."
+                  autoCapitalize="sentences"
+                  autoCorrect
+                  noShadow
+                />
+              </View>
+            )}
           </View>
         );
       }
     );
+  };
+
+  const renderComments = comments => {
+    comments.map(comment => {
+      return (
+        <View>
+          <ButtonRounded
+            onPress={() => push('Profile')}
+            image={commented_by.profile_picture}
+            size={32}
+            noShadow
+          />
+          <Text>{comment.text}</Text>
+        </View>
+      );
+    });
   };
 
   return (

@@ -7,12 +7,16 @@ export default ({
   placeholder,
   secureTextEntry,
   dark,
-  spacing
+  spacing,
+  noShadow,
+  autoCapitalize,
+  autoCorrect
 }) => {
   return (
     <View
       style={{
         ...styles.textInputView,
+        shadowRadius: noShadow ? 0 : 12,
         marginBottom: spacing && 6,
         backgroundColor: dark ? '#444' : '#FAFAFA'
       }}
@@ -22,10 +26,11 @@ export default ({
         value={value}
         placeholder={placeholder}
         secureTextEntry={secureTextEntry}
+        numberOfLines={2}
         placeholderTextColor="grey"
         underlineColorAndroid="transparent"
-        autoCorrect={false}
-        autoCapitalize="none"
+        autoCorrect={autoCorrect}
+        autoCapitalize={autoCapitalize ? autoCapitalize : 'none'}
         clearButtonMode="unless-editing"
         style={{ ...styles.textInputText, color: dark ? 'white' : 'black' }}
       />
@@ -36,18 +41,17 @@ export default ({
 const styles = StyleSheet.create({
   textInputView: {
     flexDirection: 'row',
-    padding: 8,
-    shadowRadius: 12,
+    paddingVertical: 2,
+    paddingHorizontal: 8,
     shadowOffset: { width: 0, height: 0 },
     shadowColor: 'grey',
-    shadowOpacity: 0.4,
+    shadowOpacity: 0.2,
     elevation: 20,
     borderRadius: 6
   },
   textInputText: {
     flex: 1,
-    fontWeight: '500',
-    fontSize: 16,
+    fontSize: 14,
     height: 32
   }
 });
