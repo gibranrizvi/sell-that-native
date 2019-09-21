@@ -309,9 +309,21 @@ const HomeScreen = ({ navigation }) => {
                   paddingHorizontal: 12
                 }}
               >
-                <Text style={{ fontSize: 12, color: 'grey', marginBottom: 4 }}>
-                  {likes.length} heart{likes.length !== 1 && 's'}
-                </Text>
+                {likes.length > 0 && (
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: 'grey',
+                      marginBottom: 4,
+                      fontStyle: 'italic'
+                    }}
+                  >
+                    {likes.length}{' '}
+                    {likes.length === 1
+                      ? 'person likes this'
+                      : 'people like this'}
+                  </Text>
+                )}
                 <Text
                   style={{ fontWeight: '600', fontSize: 12, marginBottom: 4 }}
                 >
