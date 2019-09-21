@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import {
   StyleSheet,
+  SafeAreaView,
   View,
   ScrollView,
   Alert,
@@ -336,7 +337,9 @@ const AuthScreen = () => {
   };
 
   return (
-    <View style={[StyleSheet.absoluteFill, { backgroundColor: 'white' }]}>
+    <SafeAreaView
+      style={{ flex: 1, ...StyleSheet.absoluteFill, backgroundColor: 'white' }}
+    >
       <ScrollView>
         <ScrollView
           horizontal
@@ -360,7 +363,6 @@ const AuthScreen = () => {
               value={email}
               onChangeText={value => setEmail(value)}
               placeholder="Email"
-              dark
               spacing
             />
             <TextInputField
@@ -368,7 +370,7 @@ const AuthScreen = () => {
               onChangeText={value => setPassword(value)}
               placeholder="Password"
               secureTextEntry
-              dark
+              spacing
             />
             <ButtonStandard
               text="Log In"
@@ -407,7 +409,6 @@ const AuthScreen = () => {
               value={values.email}
               onChangeText={value => setValues({ ...values, email: value })}
               placeholder="Email"
-              dark
               spacing
             />
             <TextInputField
@@ -415,7 +416,6 @@ const AuthScreen = () => {
               onChangeText={value => setValues({ ...values, password: value })}
               placeholder="Password"
               secureTextEntry
-              dark
               spacing
             />
             <TextInputField
@@ -425,7 +425,6 @@ const AuthScreen = () => {
               }
               placeholder="Confirm password"
               secureTextEntry
-              dark
             />
             <ButtonStandard
               text="Continue"
@@ -528,7 +527,7 @@ const AuthScreen = () => {
           </View>
         </ScrollView>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

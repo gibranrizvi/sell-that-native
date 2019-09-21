@@ -71,8 +71,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0 },
     shadowColor: 'grey',
     shadowOpacity: 0.2,
-    elevation: 20,
-    borderRadius: 6
+    elevation: 20
   },
   textInputView: {
     flex: 9,
@@ -82,9 +81,7 @@ const styles = StyleSheet.create({
   },
   textInputText: {
     flex: 1,
-    borderWidth: 0.5,
-    borderRadius: 4,
-    borderColor: 'grey',
+    borderRadius: 2,
     backgroundColor: 'white',
     paddingHorizontal: 4,
     fontSize: 14,

@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 
 export default ({ title, subtitle }) => {
   return (
-    <View style={{ marginVertical: 8 }}>
+    <View style={{ marginVertical: 12 }}>
       <Text
         style={{
           fontSize: 18,

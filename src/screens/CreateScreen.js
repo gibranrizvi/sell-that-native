@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
     fontWeight: '500',
     color: 'black',
-    fontSize: 14
+    fontSize: 12
   },
   categoryScrollView: {
     marginVertical: 8
