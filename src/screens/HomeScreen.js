@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import {
   View,
   ScrollView,
@@ -7,7 +7,8 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableWithoutFeedback,
-  ActivityIndicator
+  ActivityIndicator,
+  Animated
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
@@ -34,7 +35,16 @@ const SCROLL_DISTANCE = EXPANDED_HEADER_HEIGHT - COLLAPSED_HEADER_HEIGHT;
 // HomeScreen component
 const HomeScreen = ({ navigation }) => {
   const { firestore, user } = useContext(FirebaseContext);
-  const [posts, setPosts] = useState();
+
+  let animation = useRef(new Animated.Value(0)).current;
+  let postRefs = useRef({}).current;
+
+  const [posts, setPosts] = useState(null);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [postOverlayExpanded, setPostOverlayExpanded] = useState(false);
+  const [postPosition, setPostPosition] = useState(0);
+  const [postHeight, setPostHeight] = useState(0);
+  const [commentText, setCommentText] = useState('');
 
   const postsRef = firestore.collection('posts');
   const { push } = navigation;
@@ -46,7 +56,6 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   const getPosts = () => {
-    // TODO revert to this
     const unsubscribe = postsRef
       .orderBy('created_at', 'desc')
       .onSnapshot(snapshot => {
@@ -56,49 +65,6 @@ const HomeScreen = ({ navigation }) => {
 
         setPosts(posts);
       });
-    // setPosts([
-    //   {
-    //     category: 'Clothing & Accessories',
-    //     condition: 'Brand new',
-    //     created_at: 1568766697534,
-    //     created_by: {
-    //       created_at: 1568142656131,
-    //       email: 'gibranrzv@gmail.com',
-    //       emailVerified: true,
-    //       first_name: 'Gibran',
-    //       id: 'bqFXaaLx8qcPCEH9ddHO5XBqc282',
-    //       last_name: 'Rizvi',
-    //       profile_picture:
-    //         'https://lh3.googleusercontent.com/a-/AAuE7mDMPtoVJsw1jRawYMyhJCMmqHbzImq1zjHf6HBT=s96-c',
-    //       role: 'subscriber',
-    //       address: 'Anse aux Pins'
-    //     },
-    //     id: 'mnhKlM3VbxFyzWTTlz6Z',
-    //     images: [
-    //       'https://pazzion.shopcadacdn.com/sites/files/pazzion/productimg/201904/pazzion_3723_handbag_blue_front_view_2.jpg',
-    //       'https://pazzion.shopcadacdn.com/sites/files/pazzion/productimg/201904/pazzion_3723_handbag_blue_back_view.jpg'
-    //     ],
-    //     price: '1199.99',
-    //     sold: false,
-    //     title: 'Blue Pazzion Handbag',
-    //     description:
-    //       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore quaerat dolorem magni dolores quae quis ut odit eos eveniet! Quis non deserunt modi nostrum fugit, animi reiciendis necessitatibus quam assumenda.',
-    //     likes: [
-    //       {
-    //         liked_at: 1568142656131,
-    //         liked_by: 'bqFXaaLx8qcPCEH9ddHO5XBqc282'
-    //       }
-    //     ],
-    //     comments: [
-    //       {
-    //         commented_at: 1568142656131,
-    //         commented_by: 'bqFXaaLx8qcPCEH9ddHO5XBqc282',
-    //         text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
-    //       }
-    //     ]
-    //   }
-    // ]);
-    // const unsubscribe = () => {};
 
     return unsubscribe;
   };
@@ -132,35 +98,76 @@ const HomeScreen = ({ navigation }) => {
     return likes.filter(({ liked_by }) => liked_by.id === user.id).length === 1;
   };
 
+  const openPost = (postId, index) => {
+    setPostOverlayExpanded(true);
+    setSelectedPost(postId);
+
+    postRefs[index].measure((fx, fy, width, height, px, py) => {
+      console.log('Component width is: ' + width);
+      console.log('Component height is: ' + height);
+      console.log('X offset to frame: ' + fx);
+      console.log('Y offset to frame: ' + fy);
+      console.log('X offset to page: ' + px);
+      console.log('Y offset to page: ' + py);
+
+      // TODO animate post to top of screen
+      setPostPosition((py - (IS_IPHONE_X ? 40 : 20)) * -1);
+      setPostHeight(height);
+    });
+  };
+
+  const closePost = () => {
+    setSelectedPost(null);
+    setPostOverlayExpanded(false);
+  };
+
   const renderPosts = () => {
     return posts.map(
-      ({
-        id,
-        created_at,
-        created_by,
-        images,
-        likes,
-        comments,
-        title,
-        category,
-        price,
-        condition,
-        description
-      }) => {
+      (
+        {
+          id,
+          created_at,
+          created_by,
+          images,
+          likes,
+          comments,
+          title,
+          category,
+          price,
+          condition,
+          description
+        },
+        index
+      ) => {
         const postLiked = checkIfLiked(likes);
+        const postSelected = id === selectedPost;
 
         return (
           <View
             key={id}
+            ref={post => (postRefs[index] = post)}
             style={{
               flex: 1,
               marginTop: 12,
               shadowColor: 'grey',
               shadowRadius: 12,
               shadowOpacity: 0.2,
-              backgroundColor: 'white'
+              backgroundColor: 'white',
+              top: postSelected ? postPosition : 0
             }}
           >
+            {/* Overlay */}
+            <View
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: postSelected ? postHeight : 0,
+                backgroundColor: 'white'
+              }}
+            ></View>
+
             {/* Post header */}
             <View
               style={{
@@ -195,7 +202,15 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={{ fontSize: 12 }}>{created_by.address}</Text>
               </View>
               <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                <Ionicons name="ios-more" color="#555" size={28} />
+                {postOverlayExpanded && postSelected ? (
+                  <TouchableOpacity onPress={() => closePost()}>
+                    <Ionicons name="ios-arrow-down" color="#555" size={28} />
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity onPress={() => openPost(id, index)}>
+                    <Ionicons name="ios-more" color="#555" size={28} />
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
 
@@ -254,6 +269,7 @@ const HomeScreen = ({ navigation }) => {
                 <TouchableOpacity
                   onPress={() => {
                     // TODO write a comment
+                    openPost(id, index);
                   }}
                 >
                   <View style={{ flex: 1 }}>
@@ -304,6 +320,14 @@ const HomeScreen = ({ navigation }) => {
                 Read {comments.length} comment{comments.length !== 1 && 's'}
               </Text>
             </View>
+            {postSelected && (
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  height: height - postHeight
+                }}
+              ></View>
+            )}
           </View>
         );
       }
@@ -329,9 +353,11 @@ const HomeScreen = ({ navigation }) => {
       ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}
+          scrollEnabled={!postOverlayExpanded}
+          style={{ zIndex: postOverlayExpanded ? 1001 : 0 }}
           contentContainerStyle={styles.bodyScrollView}
         >
-          {renderPosts()}
+          {user && renderPosts()}
         </ScrollView>
       )}
     </SafeAreaView>
