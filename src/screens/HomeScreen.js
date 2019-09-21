@@ -164,15 +164,15 @@ const HomeScreen = ({ navigation }) => {
               shadowRadius: 12,
               shadowOpacity: 0.2,
               backgroundColor: 'white',
-              transform: [{ translateY: postSelected ? postPosition : 0 }]
+              transform: [{ translateY: postSelected ? postPosition : 0 }],
+              height: postSelected ? height : null
             }}
           >
             <ScrollView
-              scrollEnabled={postOverlayExpanded}
+              scrollEnabled={postSelected}
               contentContainerStyle={{
-                paddingBottom: postOverlayExpanded ? 64 : null
+                paddingBottom: postSelected ? 64 : null
               }}
-              style={{ height: postOverlayExpanded ? height : null }}
             >
               {/* Post header */}
               <View
@@ -213,7 +213,7 @@ const HomeScreen = ({ navigation }) => {
                     alignItems: 'center'
                   }}
                 >
-                  {postOverlayExpanded && postSelected ? (
+                  {postSelected ? (
                     <TouchableOpacity onPress={() => closePost()}>
                       <Ionicons name="ios-arrow-down" color="#555" size={24} />
                     </TouchableOpacity>
@@ -280,7 +280,7 @@ const HomeScreen = ({ navigation }) => {
                 <View style={{ flex: 1 }}>
                   <TouchableOpacity
                     onPress={() => {
-                      postOverlayExpanded
+                      postSelected
                         ? {
                             /* TODO focus comment field and show keyboard */
                           }
@@ -290,7 +290,7 @@ const HomeScreen = ({ navigation }) => {
                     <View style={{ flex: 1 }}>
                       <Ionicons
                         name="ios-chatbubbles"
-                        color={postOverlayExpanded ? '#333' : 'grey'}
+                        color={postSelected ? '#333' : 'grey'}
                         size={28}
                       />
                     </View>
@@ -334,7 +334,7 @@ const HomeScreen = ({ navigation }) => {
                 </Text>
                 <TouchableOpacity
                   onPress={() =>
-                    postOverlayExpanded
+                    postSelected
                       ? {
                           /* TODO focus comment field and open keyboard*/
                         }
@@ -351,7 +351,7 @@ const HomeScreen = ({ navigation }) => {
                   >
                     {comments.length === 0
                       ? 'Write a comment'
-                      : `Show${postOverlayExpanded && 'ing'} ${
+                      : `Show${postSelected && 'ing'} ${
                           comments.length
                         } comment${comments.length !== 1 && 's'}`}
                   </Text>
@@ -371,7 +371,7 @@ const HomeScreen = ({ navigation }) => {
                 </View>
               )}
             </ScrollView>
-            {postOverlayExpanded && (
+            {postSelected && (
               <View
                 style={{
                   position: 'absolute',
