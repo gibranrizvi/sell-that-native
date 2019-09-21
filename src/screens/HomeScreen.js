@@ -23,7 +23,7 @@ import { FirebaseContext } from '../firebase';
 import Header from '../components/home-screen/Header';
 import { MonoText } from '../components/styled-text/StyledText';
 import ButtonRounded from '../components/button-rounded/ButtonRounded';
-import TextInputField from '../components/text-input-field/TextInputField';
+import TextInputWithIcon from '../components/text-input-with-icon/TextInputWithIcon';
 
 // Constants
 const { height, width } = layout.window;
@@ -206,10 +206,16 @@ const HomeScreen = ({ navigation }) => {
                   </Text>
                   <Text style={{ fontSize: 12 }}>{created_by.address}</Text>
                 </View>
-                <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
                   {postOverlayExpanded && postSelected ? (
                     <TouchableOpacity onPress={() => closePost()}>
-                      <Ionicons name="ios-arrow-down" color="#555" size={28} />
+                      <Ionicons name="ios-arrow-down" color="#555" size={24} />
                     </TouchableOpacity>
                   ) : (
                     <TouchableOpacity
@@ -217,7 +223,7 @@ const HomeScreen = ({ navigation }) => {
                         // TODO open dialog modal with options for contact seller, report post
                       }}
                     >
-                      <Ionicons name="ios-more" color="#555" size={28} />
+                      <Ionicons name="ios-more" color="#555" size={24} />
                     </TouchableOpacity>
                   )}
                 </View>
@@ -344,7 +350,7 @@ const HomeScreen = ({ navigation }) => {
                     }}
                   >
                     {comments.length === 0
-                      ? 'Write a comment...'
+                      ? 'Write a comment'
                       : `Show${postOverlayExpanded && 'ing'} ${
                           comments.length
                         } comment${comments.length !== 1 && 's'}`}
@@ -358,7 +364,7 @@ const HomeScreen = ({ navigation }) => {
                   style={{
                     backgroundColor: 'white',
                     paddingHorizontal: 12,
-                    paddingBottom: 16
+                    paddingBottom: 52 // TODO this is hardcoded
                   }}
                 >
                   {renderComments(comments)}
@@ -374,11 +380,17 @@ const HomeScreen = ({ navigation }) => {
                   bottom: 72
                 }}
               >
-                <TextInputField
+                <TextInputWithIcon
                   value={commentText}
                   onChangeText={value => setCommentText(value)}
+                  onSubmit={() => {
+                    // TODO submit comment
+                  }}
+                  icon="ios-send"
                   placeholder="Write a comment..."
                   autoCapitalize="sentences"
+                  multiline
+                  numberOfLines={2}
                   autoCorrect
                   noShadow
                 />

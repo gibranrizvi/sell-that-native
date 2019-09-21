@@ -10,23 +10,29 @@ export default ({
   placeholder,
   secureTextEntry,
   icon,
-  shadow,
-  onClear
+  returnKeyType,
+  autoCorrect,
+  autoCapitalize,
+  multiline,
+  numberOfLines,
+  noShadow,
+  dark,
+  spacing,
+  disabled,
+  onSubmit
 }) => {
   return (
-    <View style={[styles.textInputView, { shadowOpacity: shadow && 0.2 }]}>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      >
-        <Ionicons name={icon} size={24} color="grey" />
-      </View>
-      <View style={{ flex: 7 }}>
+    <View
+      style={{
+        ...styles.container,
+        shadowRadius: noShadow ? 0 : 12,
+        marginBottom: spacing && 6,
+        backgroundColor: dark ? '#444' : '#EEE'
+      }}
+    >
+      <View style={styles.textInputView}>
         <TextInput
-          disabled
+          disabled={disabled}
           onChangeText={value => onChangeText(value)}
           value={value}
           onFocus={onFocus}
@@ -34,21 +40,24 @@ export default ({
           secureTextEntry={secureTextEntry}
           placeholderTextColor="grey"
           underlineColorAndroid="transparent"
-          autoCorrect={false}
-          autoCapitalize="none"
-          style={styles.textInputText}
-          returnKeyType="search"
+          clearButtonMode="unless-editing"
+          autoCorrect={autoCorrect}
+          autoCapitalize={autoCapitalize ? autoCapitalize : 'none'}
+          multiline={multiline}
+          numberOfLines={numberOfLines}
+          returnKeyType={returnKeyType}
+          style={{ ...styles.textInputText, color: dark ? 'white' : 'black' }}
         />
       </View>
       <View
         style={{
-          flex: 1
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center'
         }}
       >
-        <TouchableOpacity onPress={onClear}>
-          <View style={{ width: 36, alignItems: 'center' }}>
-            <Ionicons name="ios-close" size={32} color="grey" />
-          </View>
+        <TouchableOpacity onPress={onSubmit}>
+          <Ionicons name={icon} size={24} color="#333" />
         </TouchableOpacity>
       </View>
     </View>
@@ -56,22 +65,29 @@ export default ({
 };
 
 const styles = StyleSheet.create({
-  textInputView: {
+  container: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 8,
-    backgroundColor: 'white',
-    shadowRadius: 20,
-    shadowOffset: { width: 0, height: 10 },
-    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 0 },
+    shadowColor: 'grey',
+    shadowOpacity: 0.2,
     elevation: 20,
     borderRadius: 6
   },
+  textInputView: {
+    flex: 9,
+    justifyContent: 'center',
+    paddingVertical: 4,
+    paddingLeft: 4
+  },
   textInputText: {
     flex: 1,
-    fontWeight: '500',
-    fontSize: 16,
-    color: '#333',
-    height: 32
+    borderWidth: 0.5,
+    borderRadius: 4,
+    borderColor: 'grey',
+    backgroundColor: 'white',
+    paddingHorizontal: 4,
+    fontSize: 14,
+    height: 28
   }
 });

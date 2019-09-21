@@ -10,7 +10,8 @@ export default ({
   spacing,
   noShadow,
   autoCapitalize,
-  autoCorrect
+  autoCorrect,
+  returnKeyType
 }) => {
   return (
     <View
@@ -18,7 +19,7 @@ export default ({
         ...styles.textInputView,
         shadowRadius: noShadow ? 0 : 12,
         marginBottom: spacing && 6,
-        backgroundColor: dark ? '#444' : '#FAFAFA'
+        backgroundColor: dark ? '#444' : 'white'
       }}
     >
       <TextInput
@@ -30,6 +31,7 @@ export default ({
         placeholderTextColor="grey"
         underlineColorAndroid="transparent"
         autoCorrect={autoCorrect}
+        returnKeyType={returnKeyType}
         autoCapitalize={autoCapitalize ? autoCapitalize : 'none'}
         clearButtonMode="unless-editing"
         style={{ ...styles.textInputText, color: dark ? 'white' : 'black' }}
@@ -40,9 +42,8 @@ export default ({
 
 const styles = StyleSheet.create({
   textInputView: {
-    flexDirection: 'row',
+    justifyContent: 'center',
     paddingVertical: 2,
-    paddingHorizontal: 8,
     shadowOffset: { width: 0, height: 0 },
     shadowColor: 'grey',
     shadowOpacity: 0.2,
@@ -52,6 +53,6 @@ const styles = StyleSheet.create({
   textInputText: {
     flex: 1,
     fontSize: 14,
-    height: 32
+    height: 28
   }
 });
