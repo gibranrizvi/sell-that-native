@@ -164,14 +164,17 @@ const HomeScreen = ({ navigation }) => {
               shadowRadius: 12,
               shadowOpacity: 0.2,
               backgroundColor: 'white',
-              transform: [{ translateY: postSelected ? postPosition : 0 }],
-              height: postSelected ? height : null
+              transform: [{ translateY: postSelected ? postPosition : 0 }]
+              // height: postSelected ? height : null
             }}
           >
             <ScrollView
               scrollEnabled={postSelected}
               contentContainerStyle={{
                 paddingBottom: postSelected ? 64 : null
+              }}
+              style={{
+                height: postSelected ? height : null
               }}
             >
               {/* Post header */}
@@ -350,7 +353,9 @@ const HomeScreen = ({ navigation }) => {
                     }}
                   >
                     {comments.length === 0
-                      ? 'Write a comment'
+                      ? postSelected
+                        ? 'No comments found'
+                        : 'Write a comment'
                       : `Show${postSelected && 'ing'} ${
                           comments.length
                         } comment${comments.length !== 1 && 's'}`}
@@ -364,7 +369,7 @@ const HomeScreen = ({ navigation }) => {
                   style={{
                     backgroundColor: 'white',
                     paddingHorizontal: 12,
-                    paddingBottom: 52 // TODO this is hardcoded
+                    paddingBottom: IS_IPHONE_X ? 106 : 52 // TODO this is hardcoded
                   }}
                 >
                   {renderComments(comments)}
@@ -377,7 +382,7 @@ const HomeScreen = ({ navigation }) => {
                   position: 'absolute',
                   left: 0,
                   right: 0,
-                  bottom: 72
+                  bottom: IS_IPHONE_X ? 126 : 72 // TODO this is hardcoded
                 }}
               >
                 <TextInputWithIcon
