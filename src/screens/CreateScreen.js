@@ -50,6 +50,16 @@ const CreateScreen = ({ navigation }) => {
   const submitPost = () => {
     setLoading(true);
 
+    if (!title) {
+      return alert('Please enter a title');
+    } else if (!category) {
+      return alert('Please choose a category');
+    } else if (!price) {
+      return alert('Please set a price');
+    } else if (!condition) {
+      return alert('Please enter the condition of your item');
+    }
+
     const newPost = {
       title,
       category,
@@ -58,8 +68,9 @@ const CreateScreen = ({ navigation }) => {
       description:
         'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus rem doloribus, adipisci pariatur sint ipsum voluptatem neque amet.',
       images: [
-        'https://pazzion.shopcadacdn.com/sites/files/pazzion/productimg/201904/pazzion_3723_handbag_blue_back_view.jpg',
-        'https://pazzion.shopcadacdn.com/sites/files/pazzion/productimg/201904/pazzion_3723_handbag_blue_front_view_2.jpg'
+        'https://hnsfpau.imgix.net/5/images/detailed/100/iPhone-11-Pro-Grey-01.jpg',
+        'https://pisces.bbystatic.com/image2/BestBuy_US/images/products/6341/6341561_sd.jpg',
+        'http://cdn.iphonehacks.com/wp-content/uploads/2019/09/iphone11-pro-unboxing6.jpg'
       ]
     };
 
@@ -91,7 +102,7 @@ const CreateScreen = ({ navigation }) => {
             <TextInputField
               value={title}
               onChangeText={value => setTitle(value)}
-              placeholder="What are you selling?"
+              placeholder="What are you selling? *"
             />
           </View>
         </View>
@@ -103,12 +114,13 @@ const CreateScreen = ({ navigation }) => {
             tabs={[
               { name: 'Electronics' },
               { name: 'Services' },
-              { name: 'Clothing & Accessories' },
-              { name: 'Vehicles' },
+              { name: 'Clothes' },
+              { name: 'Accessories' },
+              { name: 'Vehicles & Parts' },
               { name: 'Health & Beauty' },
               { name: 'Real Estate' },
               { name: 'Home & Garden' },
-              { name: 'Sports' },
+              { name: 'Sporting Goods' },
               { name: 'Miscellaneous' }
             ]}
             selected={category}
@@ -123,7 +135,7 @@ const CreateScreen = ({ navigation }) => {
             <TextInputField
               value={price}
               onChangeText={value => setPrice(value)}
-              placeholder="SR 0.00"
+              placeholder="SR 0.00 *"
             />
           </View>
         </View>
@@ -135,7 +147,7 @@ const CreateScreen = ({ navigation }) => {
             <TextInputField
               value={condition}
               onChangeText={value => setCondition(value)}
-              placeholder="Select condition"
+              placeholder="Select condition *"
             />
           </View>
         </View>

@@ -71,6 +71,11 @@ export const createUserProfileDocument = async ({
   if (!snapshot.exists) {
     // Create new user
     const created_at = Date.now();
+    const isNewUser = true;
+
+    // Notifications - two types, activities (likes and comments) and messages
+    const messages = [{ unread: true }];
+    const activity = [];
 
     try {
       await userRef.set({
@@ -80,6 +85,7 @@ export const createUserProfileDocument = async ({
         profile_picture,
         role,
         emailVerified,
+        isNewUser,
         created_at
       });
     } catch (error) {

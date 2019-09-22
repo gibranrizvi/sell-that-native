@@ -425,6 +425,7 @@ const AuthScreen = () => {
               }
               placeholder="Confirm password"
               secureTextEntry
+              spacing
             />
             <ButtonStandard
               text="Continue"
@@ -475,11 +476,13 @@ const AuthScreen = () => {
               value={values.firstName}
               onChangeText={value => setValues({ ...values, firstName: value })}
               placeholder="First name"
+              spacing
             />
             <TextInputField
               value={values.lastName}
               onChangeText={value => setValues({ ...values, lastName: value })}
               placeholder="Last name"
+              spacing
             />
             <ButtonStandard
               text="Continue"

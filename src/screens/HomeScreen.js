@@ -14,6 +14,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import { formatDistanceToNow } from 'date-fns';
+import uuidv4 from 'uuid/v4';
 
 // Local imports
 import layout from '../constants/layout';
@@ -71,7 +72,6 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const likeOrUnlikePost = (postId, likes, postLiked) => {
-    const postsRef = firestore.collection('posts');
     const postRef = postsRef.doc(`${postId}`);
 
     let updatedLikes;
@@ -164,17 +164,15 @@ const HomeScreen = ({ navigation }) => {
               shadowRadius: 12,
               shadowOpacity: 0.2,
               backgroundColor: 'white',
-              transform: [{ translateY: postSelected ? postPosition : 0 }]
-              // height: postSelected ? height : null
+              transform: [{ translateY: postSelected ? postPosition : 0 }],
+              height: postSelected ? height : null,
+              zIndex: postSelected ? 1000 : 0
             }}
           >
             <ScrollView
               scrollEnabled={postSelected}
               contentContainerStyle={{
                 paddingBottom: postSelected ? 64 : null
-              }}
-              style={{
-                height: postSelected ? height : null
               }}
             >
               {/* Post header */}
@@ -194,7 +192,13 @@ const HomeScreen = ({ navigation }) => {
                     noShadow
                   />
                 </View>
-                <View style={{ flex: 7, justifyContent: 'space-between' }}>
+                <View
+                  style={{
+                    flex: 8,
+                    justifyContent: 'space-between',
+                    paddingLeft: 4
+                  }}
+                >
                   <Text
                     style={{
                       fontWeight: '600',
@@ -202,8 +206,14 @@ const HomeScreen = ({ navigation }) => {
                       marginBottom: 2
                     }}
                   >
-                    {`${created_by.first_name} ${created_by.last_name}`}{' '}
-                    <Text style={{ fontWeight: 'normal', color: 'grey' }}>
+                    {created_by.first_name} {created_by.last_name}{' '}
+                    <Text
+                      style={{
+                        fontWeight: 'normal',
+                        color: 'grey',
+                        fontStyle: 'italic'
+                      }}
+                    >
                       posted {formatDistanceToNow(created_at)} ago
                     </Text>
                   </Text>
@@ -211,14 +221,19 @@ const HomeScreen = ({ navigation }) => {
                 </View>
                 <View
                   style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center'
+                    flex: 1
                   }}
                 >
                   {postSelected ? (
                     <TouchableOpacity onPress={() => closePost()}>
-                      <Ionicons name="ios-arrow-down" color="#555" size={24} />
+                      <View>
+                        <Ionicons
+                          name="ios-arrow-down"
+                          color="#555"
+                          size={24}
+                          style={{ alignSelf: 'center' }}
+                        />
+                      </View>
                     </TouchableOpacity>
                   ) : (
                     <TouchableOpacity
@@ -226,7 +241,14 @@ const HomeScreen = ({ navigation }) => {
                         // TODO open dialog modal with options for contact seller, report post
                       }}
                     >
-                      <Ionicons name="ios-more" color="#555" size={24} />
+                      <View>
+                        <Ionicons
+                          name="ios-more"
+                          color="#555"
+                          size={28}
+                          style={{ alignSelf: 'center' }}
+                        />
+                      </View>
                     </TouchableOpacity>
                   )}
                 </View>
@@ -262,7 +284,7 @@ const HomeScreen = ({ navigation }) => {
                     <TouchableOpacity
                       onPress={() => likeOrUnlikePost(id, likes, postLiked)}
                     >
-                      <View style={{ flex: 1 }}>
+                      <View>
                         {postLiked ? (
                           <Ionicons
                             name="ios-heart"
@@ -290,7 +312,7 @@ const HomeScreen = ({ navigation }) => {
                         : openPost(id, index);
                     }}
                   >
-                    <View style={{ flex: 1 }}>
+                    <View>
                       <Ionicons
                         name="ios-chatbubbles"
                         color={postSelected ? '#333' : 'grey'}
@@ -368,9 +390,9 @@ const HomeScreen = ({ navigation }) => {
                       ? postSelected
                         ? 'No comments found'
                         : 'Write a comment'
-                      : `Show${postSelected && 'ing'} ${
+                      : `${postSelected ? 'Found' : 'Show'} ${
                           comments.length
-                        } comment${comments.length !== 1 && 's'}`}
+                        } comment${comments.length !== 1 ? 's' : ''}`}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -379,7 +401,6 @@ const HomeScreen = ({ navigation }) => {
               {postSelected && (
                 <View
                   style={{
-                    backgroundColor: 'white',
                     paddingHorizontal: 12,
                     paddingBottom: IS_IPHONE_X ? 106 : 52 // TODO this is hardcoded
                   }}
@@ -401,7 +422,7 @@ const HomeScreen = ({ navigation }) => {
                   value={commentText}
                   onChangeText={value => setCommentText(value)}
                   onSubmit={() => {
-                    // TODO submit comment
+                    return postComment(id, comments);
                   }}
                   icon="ios-send"
                   placeholder="Write a comment..."
@@ -419,21 +440,114 @@ const HomeScreen = ({ navigation }) => {
     );
   };
 
-  const renderComments = comments => {
-    comments.map(comment => {
+  const postComment = (postId, comments) => {
+    const postRef = postsRef.doc(`${postId}`);
+
+    const { id, first_name, last_name, profile_picture } = user;
+
+    const comment_id = uuidv4();
+
+    const updatedComments = [
+      ...comments,
+      {
+        comment_id,
+        commented_at: Date.now(),
+        commented_by: { id, first_name, last_name, profile_picture },
+        text: commentText
+      }
+    ];
+
+    setCommentText('');
+
+    return postRef.update({ comments: updatedComments });
+  };
+
+  const removeComment = (commentIdToBeRemoved, comments) => {
+    const postRef = postsRef.doc(`${selectedPost}`);
+
+    updatedComments = comments.filter(
+      ({ comment_id }) => comment_id !== commentIdToBeRemoved
+    );
+
+    return postRef.update({ comments: updatedComments });
+  };
+
+  const renderComments = comments =>
+    comments.map(({ comment_id, commented_at, commented_by, text }, index) => {
+      const { id, first_name, last_name, profile_picture } = commented_by;
       return (
-        <View>
-          <ButtonRounded
-            onPress={() => push('Profile')}
-            image={commented_by.profile_picture}
-            size={32}
-            noShadow
-          />
-          <Text>{comment.text}</Text>
+        <View
+          key={index}
+          style={{
+            flexDirection: 'row',
+            paddingVertical: 4
+          }}
+        >
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+            <ButtonRounded
+              onPress={() => push('Profile')}
+              image={profile_picture}
+              size={32}
+              noShadow
+            />
+          </View>
+          <View
+            style={{
+              flex: 8,
+              justifyContent: 'space-between',
+              marginHorizontal: 8,
+              paddingHorizontal: 8,
+              paddingVertical: 8,
+              backgroundColor: 'royalblue',
+              borderRadius: 4
+            }}
+          >
+            <Text style={{ fontSize: 12, marginBottom: 2, color: 'white' }}>
+              <Text style={{ fontWeight: '800' }}>
+                {first_name} {last_name}{' '}
+              </Text>
+              <Text
+                style={{
+                  fontStyle: 'italic',
+                  color: 'white',
+                  fontWeight: '500'
+                }}
+              >
+                wrote {formatDistanceToNow(commented_at)} ago
+              </Text>
+            </Text>
+            <Text style={{ fontSize: 12, color: 'white', fontWeight: '600' }}>
+              {text}
+            </Text>
+          </View>
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+            <TouchableOpacity
+              onPress={() =>
+                id === user.id && removeComment(comment_id, comments)
+              }
+            >
+              <View>
+                {id === user.id ? (
+                  <Ionicons
+                    name="ios-trash"
+                    size={24}
+                    color="grey"
+                    style={{ alignSelf: 'center' }}
+                  />
+                ) : (
+                  <Ionicons
+                    name="ios-more"
+                    size={24}
+                    color="grey"
+                    style={{ alignSelf: 'center' }}
+                  />
+                )}
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
       );
     });
-  };
 
   return (
     <SafeAreaView style={styles.root}>
