@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, View, TouchableOpacity } from 'react-native';
 import {
   createStackNavigator,
   createBottomTabNavigator
@@ -10,99 +10,140 @@ import CreateScreen from '../screens/CreateScreen';
 import InboxScreen from '../screens/InboxScreen';
 import TabBarIcon from '../components/tab-bar-icon/TabBarIcon';
 import TabBarIconWithBadge from '../components/tab-bar-icon-with-badge/TabBarIconWithBadge';
+import PostScreen from '../screens/PostScreen';
+import { LogoText } from '../components/styled-text/StyledText';
+import { Ionicons } from '@expo/vector-icons';
+import OpenDrawerButton from '../components/open-drawer-button/OpenDrawerButton';
 
-const config = Platform.select({
-  web: { headerMode: 'screen' },
-  default: {}
-});
-
-const HomeStack = createStackNavigator(
-  {
-    Home: HomeScreen
-  },
-  {
-    defaultNavigationOptions: {
-      header: null
-    }
-  },
-  config
+const GoBackIconButton = ({ onPress }) => (
+  <TouchableOpacity onPress={onPress}>
+    <View style={{ marginLeft: 8 }}>
+      <Ionicons
+        name="ios-arrow-back"
+        color="black"
+        size={28}
+        style={{ alignSelf: 'center' }}
+      />
+    </View>
+  </TouchableOpacity>
 );
 
-HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
-  tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-home" />
-};
-
-HomeStack.path = '';
+export const HomeStack = createStackNavigator(
+  {
+    Home: {
+      screen: HomeScreen,
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerTitle: (
+            <LogoText
+              style={{
+                fontSize: 28,
+                color: 'orangered',
+                marginHorizontal: 12,
+                bottom: Platform.OS === 'android' ? -4 : 0
+              }}
+            >
+              Sell that
+            </LogoText>
+          ),
+          headerRight: (
+            <OpenDrawerButton onPress={() => navigation.openDrawer()} />
+          )
+        };
+      }
+    },
+    Post: {
+      screen: PostScreen,
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerTitle: 'Post',
+          headerRight: (
+            <OpenDrawerButton onPress={() => navigation.openDrawer()} />
+          ),
+          headerLeft: <GoBackIconButton onPress={() => navigation.goBack()} />
+        };
+      }
+    }
+  },
+  {
+    navigationOptions: {
+      tabBarLabel: 'Home',
+      tabBarIcon: ({ focused }) => (
+        <TabBarIcon focused={focused} name="md-home" />
+      )
+    },
+    headerMode: 'float',
+    headerTransitionPreset: 'uikit',
+    headerBackTitleVisible: false,
+    cardOverlayEnabled: true
+  }
+);
 
 const CreateStack = createStackNavigator(
   {
-    Create: CreateScreen
-  },
-  {
-    defaultNavigationOptions: {
-      header: null
+    Create: {
+      screen: CreateScreen,
+      navigationOptions: ({ navigation }) => {
+        return { header: null };
+      }
     }
   },
-  config
+  {
+    navigationOptions: {
+      tabBarLabel: 'Create',
+      tabBarIcon: ({ focused }) => (
+        <TabBarIcon
+          focused={focused}
+          name={focused ? 'md-add-circle-outline' : 'ios-add-circle-outline'}
+        />
+      )
+    }
+  }
 );
-
-CreateStack.navigationOptions = {
-  tabBarLabel: 'Create',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={focused ? 'md-add-circle-outline' : 'ios-add-circle-outline'}
-    />
-  )
-};
-
-CreateStack.path = '';
 
 const InboxStack = createStackNavigator(
   {
-    Inbox: InboxScreen
-  },
-  {
-    defaultNavigationOptions: {
-      header: null
+    Inbox: {
+      screen: InboxScreen,
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerTitle: 'Inbox',
+          headerRight: (
+            <OpenDrawerButton onPress={() => navigation.openDrawer()} />
+          )
+        };
+      }
     }
   },
-  config
+  {
+    navigationOptions: {
+      tabBarLabel: 'Inbox',
+      tabBarIcon: ({ focused }) => (
+        <TabBarIconWithBadge focused={focused} name="md-mail" />
+      )
+    }
+  }
 );
 
-InboxStack.navigationOptions = {
-  tabBarLabel: 'Inbox',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIconWithBadge focused={focused} name="md-mail" />
-  )
-};
-
-InboxStack.path = '';
-
-const tabNavigator = createBottomTabNavigator(
+const MainTabNavigator = createBottomTabNavigator(
   {
     HomeStack,
     CreateStack,
     InboxStack
   },
   {
-    initialRouteName: 'CreateStack',
+    navigationOptions: () => {
+      return {
+        header: null
+      };
+    },
+    lazy: false,
     tabBarOptions: {
-      showLabel: false,
-      style: {
-        backgroundColor: 'white',
-        // opacity: 0.95, TODO
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        height: 52
-      }
+      showLabel: false
     }
   }
 );
 
-tabNavigator.path = '';
+MainTabNavigator.path = '';
 
-export default tabNavigator;
+export default MainTabNavigator;

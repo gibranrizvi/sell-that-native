@@ -3,18 +3,29 @@ import {
   View,
   Image,
   TouchableWithoutFeedback,
-  StyleSheet
+  StyleSheet,
+  ActivityIndicator
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { FirebaseContext } from '../../firebase';
 
-const ButtonRounded = ({ onPress, image, size, noShadow }) => {
+const ButtonRounded = ({ onPress, image, size, noShadow, style }) => {
+  const { user } = React.useContext(FirebaseContext);
+
   const renderImage = () => {
+    let picture;
+
+    if (!image) {
+      picture = user.profile_picture;
+    } else {
+      picture = image;
+    }
+
     return (
       <Image
         source={
-          image === 'default'
+          picture === 'default'
             ? require('../../../assets/images/robot-dev.png')
-            : { uri: image }
+            : { uri: picture }
         }
         style={[
           styles.touchableImage,
@@ -24,29 +35,29 @@ const ButtonRounded = ({ onPress, image, size, noShadow }) => {
     );
   };
 
-  return image ? (
+  return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View
-        animation="bounceIn"
         style={{
           ...styles.touchableView,
           height: size,
           width: size,
           borderRadius: size / 4,
-          shadowRadius: noShadow ? 0 : 12
+          shadowRadius: noShadow ? 0 : 12,
+          ...style
         }}
       >
-        {renderImage()}
+        {user ? renderImage() : <ActivityIndicator color="grey" />}
       </View>
     </TouchableWithoutFeedback>
-  ) : null;
+  );
 };
 
 const styles = StyleSheet.create({
   touchableView: {
     justifyContent: 'center',
     shadowColor: 'grey',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: -1, height: 2 },
     shadowOpacity: 0.4,
     backgroundColor: 'white',
     elevation: 20

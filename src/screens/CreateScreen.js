@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     justifyContent: 'center'
   },
-  bodyScrollView: { marginVertical: 12, paddingBottom: 80 },
+  bodyScrollView: { marginTop: Platform.OS === 'android' ? 24 : 0 }, // TODO hard-coded value
   sectionView: {
     marginVertical: 2
   },

@@ -18,8 +18,8 @@ const STATUS_BAR_HEIGHT = Constants.statusBarHeight;
 const IS_IPHONE_X = height === 812 || height === 896;
 
 const Header = ({ navigation }) => {
-  const { user, auth } = useContext(FirebaseContext);
-  const { navigate } = navigation;
+  const { auth } = useContext(FirebaseContext);
+  const { openDrawer } = navigation;
 
   return (
     <View
@@ -28,15 +28,7 @@ const Header = ({ navigation }) => {
     >
       <LogoText style={styles.headerTitleText}>Sell that</LogoText>
       <View style={styles.profileActionView}>
-        {user && user.profile_picture ? (
-          <ButtonRounded
-            onPress={() => navigate('Profile')}
-            image={user.profile_picture}
-            size={36}
-          />
-        ) : (
-          <ActivityIndicator color="#333" />
-        )}
+        <ButtonRounded onPress={() => openDrawer()} size={28} />
       </View>
       <View style={styles.headerRightView}>
         <TouchableOpacity onPress={() => auth.signOut()}>
@@ -54,19 +46,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomColor: '#999',
     borderBottomWidth: 0.4,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: IS_IPHONE_X ? 106 : 86, // TODO hard-coded values
+    height: IS_IPHONE_X ? 96 : 76, // TODO hard-coded values
     paddingTop: STATUS_BAR_HEIGHT + 12,
-    paddingBottom: 12,
-    paddingHorizontal: 6,
-    backgroundColor: 'white',
-    zIndex: 1000
+    backgroundColor: 'white'
   },
   headerTitleText: {
-    fontSize: 32,
+    fontSize: 26,
     color: 'orangered'
   },
   profileActionView: {

@@ -80,13 +80,13 @@ const InboxScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.root}>
       {/* Header */}
-      <Header navigation={navigation} />
+      {/* <Header navigation={navigation} /> */}
 
       {/* Tabs */}
       <Animated.View
         style={{
           position: 'absolute',
-          top: IS_IPHONE_X ? 68 + STATUS_BAR_HEIGHT : 68, // TODO might need to fix this later on
+          top: 0,
           left: 0,
           right: 0,
           height: IS_IPHONE_X ? 52 : 68 - STATUS_BAR_HEIGHT, // TODO might need to fix this later on

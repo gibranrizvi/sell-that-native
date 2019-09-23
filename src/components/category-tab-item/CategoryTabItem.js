@@ -13,7 +13,7 @@ const CategoryTabItem = ({ name, first, last, selected, onSelectCategory }) => {
           padding: 8,
           margin: 2,
           marginLeft: first ? 12 : 4,
-          marginRight: last && 12,
+          marginRight: last ? 12 : 0,
           borderRadius: 4,
           borderWidth: 1,
           borderColor: selected === name ? 'orangered' : 'white',

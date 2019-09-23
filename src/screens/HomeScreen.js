@@ -99,21 +99,23 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const openPost = (postId, index) => {
-    setPostOverlayExpanded(true);
-    setSelectedPost(postId);
+    navigation.push('Post');
 
-    postRefs[index].measure((fx, fy, width, height, px, py) => {
-      console.log('Component width is: ' + width);
-      console.log('Component height is: ' + height);
-      console.log('X offset to frame: ' + fx);
-      console.log('Y offset to frame: ' + fy);
-      console.log('X offset to page: ' + px);
-      console.log('Y offset to page: ' + py);
+    // setPostOverlayExpanded(true);
+    // setSelectedPost(postId);
 
-      // TODO animate post to top of screen
-      setPostPosition((py - (IS_IPHONE_X ? 40 : 20)) * -1);
-      setPostHeight(height);
-    });
+    // postRefs[index].measure((fx, fy, width, height, px, py) => {
+    //   console.log('Component width is: ' + width);
+    //   console.log('Component height is: ' + height);
+    //   console.log('X offset to frame: ' + fx);
+    //   console.log('Y offset to frame: ' + fy);
+    //   console.log('X offset to page: ' + px);
+    //   console.log('Y offset to page: ' + py);
+
+    // TODO animate post to top of screen
+    // setPostPosition((py - (IS_IPHONE_X ? 40 : 20)) * -1);
+    // setPostHeight(height);
+    // });
   };
 
   // TODO add swipe down gesture to close overlay
@@ -163,6 +165,7 @@ const HomeScreen = ({ navigation }) => {
               shadowColor: 'grey',
               shadowRadius: 12,
               shadowOpacity: 0.2,
+              elevation: 12,
               backgroundColor: 'white',
               transform: [{ translateY: postSelected ? postPosition : 0 }],
               height: postSelected ? height : null,
@@ -238,6 +241,7 @@ const HomeScreen = ({ navigation }) => {
                   ) : (
                     <TouchableOpacity
                       onPress={() => {
+                        return navigation.push('Post');
                         // TODO open dialog modal with options for contact seller, report post
                       }}
                     >
@@ -552,11 +556,15 @@ const HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.root}>
       {/* Header */}
-      <Header navigation={navigation} />
+      {/* <Header navigation={navigation} /> */}
       {/* Posts */}
       {!posts ? (
         <View
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
         >
           <ActivityIndicator
             size="small"
@@ -581,10 +589,7 @@ const HomeScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: 'white' },
-  bodyScrollView: {
-    paddingTop: 64, // TODO this is hard-coded
-    paddingBottom: 64
-  }
+  bodyScrollView: {}
 });
 
 export default HomeScreen;
