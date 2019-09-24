@@ -176,7 +176,7 @@ const PostItem = ({
           <Text
             style={{
               fontSize: 12,
-              color: 'grey',
+              color: '#555',
               marginBottom: 4,
               fontStyle: 'italic'
             }}
@@ -207,7 +207,7 @@ const PostItem = ({
           <Text
             style={{
               fontSize: 12,
-              color: 'grey',
+              color: '#555',
               fontStyle: 'italic',
               alignSelf: 'flex-start'
             }}

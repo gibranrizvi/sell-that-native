@@ -4,12 +4,16 @@ import { Ionicons } from '@expo/vector-icons';
 
 // TODO Get notifications from context
 
-const TabBarIconWithBadge = ({ name, focused }) => {
+const TabBarIconWithBadge = ({ name, focused, size }) => {
   const unread = true;
 
   return (
     <View>
-      <Ionicons name={name} size={32} color={focused ? 'orangered' : '#555'} />
+      <Ionicons
+        name={name}
+        size={size}
+        color={focused ? 'orangered' : '#555'}
+      />
       {unread && (
         <View
           style={{

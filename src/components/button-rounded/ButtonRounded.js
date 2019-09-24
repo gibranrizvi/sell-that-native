@@ -47,7 +47,7 @@ const ButtonRounded = ({ onPress, image, size, noShadow, style }) => {
           ...style
         }}
       >
-        {user ? renderImage() : <ActivityIndicator color="grey" />}
+        {user ? renderImage() : <ActivityIndicator color="#555" />}
       </View>
     </TouchableWithoutFeedback>
   );
