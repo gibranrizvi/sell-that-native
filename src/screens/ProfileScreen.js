@@ -28,18 +28,6 @@ const ProfileScreen = () => {
     <SafeAreaView style={styles.root}>
       {/* Body */}
       <ScrollView contentContainerStyle={styles.bodyScrollView}>
-        <View style={{ borderWidth: 1 }}>
-          <Text>Payment methods</Text>
-        </View>
-        <View style={{ borderWidth: 1 }}>
-          <Text>Add new payment method</Text>
-        </View>
-        <View style={{ borderWidth: 1 }}>
-          <Text>Booking history</Text>
-        </View>
-        <View style={{ borderWidth: 1 }}>
-          <Text>Create new listing</Text>
-        </View>
         <View>
           <Text style={{ alignSelf: 'center' }}>ProfileScreen</Text>
           <Button title="Sign out" onPress={() => auth.signOut()} />

@@ -1,11 +1,33 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, SafeAreaView, ScrollView } from 'react-native';
+import CommentTextInput from '../components/comment-text-input/CommentTextInput';
+import PostItem from '../components/post-item/PostItem';
+import { FirebaseContext } from '../firebase';
 
-const PostScreen = () => {
+const PostScreen = ({ navigation }) => {
+  const { firestore, user } = React.useContext(FirebaseContext);
+
+  const { post } = navigation.state.params;
   return (
-    <View>
-      <Text> PostScreen </Text>
-    </View>
+    <SafeAreaView style={{ flex: 1, justifyContent: 'space-between' }}>
+      <ScrollView
+        contentContainerStyle={{
+          // TODO fix hard-coded value
+          paddingBottom: 32
+        }}
+      >
+        <PostItem
+          post={post}
+          navigation={navigation}
+          user={user}
+          firestore={firestore}
+          showComments
+          noMargin
+          noShadow
+        />
+      </ScrollView>
+      <CommentTextInput />
+    </SafeAreaView>
   );
 };
 

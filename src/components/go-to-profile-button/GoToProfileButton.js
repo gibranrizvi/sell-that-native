@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 
 import ButtonRounded from '../button-rounded/ButtonRounded';
 
-const OpenDrawerButton = ({ onPress }) => (
+const GoToProfileButton = ({ onPress }) => (
   <ButtonRounded
     size={28}
     style={{
@@ -14,4 +14,4 @@ const OpenDrawerButton = ({ onPress }) => (
   />
 );
 
-export default OpenDrawerButton;
+export default GoToProfileButton;
