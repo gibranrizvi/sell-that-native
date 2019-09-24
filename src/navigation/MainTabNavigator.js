@@ -21,14 +21,14 @@ const GoBackIconButton = ({ onPress }) => (
   <TouchableOpacity onPress={onPress}>
     <View
       style={{
-        left: Platform.OS === 'android' ? 12 : 8,
+        left: Platform.OS === 'android' ? 16 : 12,
         bottom: Platform.OS === 'android' ? -2 : 0
       }}
     >
       <Ionicons
-        name="ios-arrow-back"
-        color="black"
-        size={28}
+        name="ios-close"
+        color="#333"
+        size={36}
         style={{ alignSelf: 'center' }}
       />
     </View>
@@ -39,7 +39,7 @@ const OpenDrawerIconButton = ({ onPress }) => (
   <TouchableOpacity onPress={onPress}>
     <View
       style={{
-        right: Platform.OS === 'android' ? 12 : 8,
+        right: Platform.OS === 'android' ? 16 : 12,
         bottom: Platform.OS === 'android' ? -2 : 0
       }}
     >
@@ -53,32 +53,7 @@ const OpenDrawerIconButton = ({ onPress }) => (
   </TouchableOpacity>
 );
 
-const ProfileStack = createStackNavigator({
-  Profile: {
-    screen: ProfileScreen,
-    navigationOptions: ({ navigation }) => {
-      return {
-        headerTitle: 'Profile',
-        headerLeft: <GoBackIconButton onPress={() => navigation.goBack()} />,
-        headerRight: (
-          <OpenDrawerIconButton onPress={() => navigation.openDrawer()} />
-        )
-      };
-    }
-  }
-});
-
-const ProfileDrawerNavigator = createDrawerNavigator(
-  {
-    Profile: ProfileStack
-  },
-  {
-    drawerPosition: 'right',
-    hideStatusBar: true,
-    drawerType: 'slide'
-  }
-);
-
+// HomeStack
 export const HomeStack = createStackNavigator(
   {
     Home: {
@@ -99,8 +74,7 @@ export const HomeStack = createStackNavigator(
           ),
           headerRight: (
             <GoToProfileButton onPress={() => navigation.navigate('Profile')} />
-          ),
-          headerLayoutPreset: 'left'
+          )
         };
       }
     },
@@ -109,15 +83,21 @@ export const HomeStack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           headerTitle: 'Comments',
-          headerLeft: <GoBackIconButton onPress={() => navigation.goBack()} />
+          headerLeft: <GoBackIconButton onPress={() => navigation.goBack()} />,
+          headerStyle: { borderBottomWidth: 0 }
         };
       }
     },
     Profile: {
-      screen: ProfileDrawerNavigator,
+      screen: ProfileScreen,
       navigationOptions: ({ navigation }) => {
         return {
-          header: null
+          headerTitle: 'Profile',
+          headerLeft: <GoBackIconButton onPress={() => navigation.goBack()} />,
+          headerRight: (
+            <OpenDrawerIconButton onPress={() => navigation.openDrawer()} />
+          ),
+          headerStyle: { borderBottomWidth: 0 }
         };
       }
     }
@@ -129,21 +109,33 @@ export const HomeStack = createStackNavigator(
         <TabBarIcon focused={focused} name="ios-today" />
       )
     },
-    headerMode: 'float',
-    headerTransitionPreset: 'uikit',
+    // TODO come back to this
+    mode: 'card',
+    headerMode: 'screen',
+    headerTransitionPreset: 'fade-in-place',
     headerBackTitleVisible: false,
-    cardOverlayEnabled: true
+    headerLayoutPreset: 'center'
   }
 );
 
+// CreateStack
 const CreateStack = createStackNavigator(
   {
     Create: {
       screen: CreateScreen,
       navigationOptions: ({ navigation }) => {
         return {
-          header: (
-            <View style={{ position: 'absolute', top: 0, left: 0, right: 0 }} />
+          headerContainerStyles: (
+            <View
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                zIndex: 1000,
+                backgroundColor: 'white'
+              }}
+            />
           ),
           headerRight: (
             <GoToProfileButton onPress={() => navigation.openDrawer()} />
@@ -156,15 +148,13 @@ const CreateStack = createStackNavigator(
     navigationOptions: {
       tabBarLabel: 'Create',
       tabBarIcon: ({ focused }) => (
-        <TabBarIcon
-          focused={focused}
-          name={focused ? 'md-add-circle-outline' : 'ios-add-circle-outline'}
-        />
+        <TabBarIcon focused={focused} name="ios-add-circle-outline" />
       )
     }
   }
 );
 
+// InboxStack
 const InboxStack = createStackNavigator(
   {
     Inbox: {
@@ -174,7 +164,8 @@ const InboxStack = createStackNavigator(
           headerTitle: 'Inbox',
           headerRight: (
             <GoToProfileButton onPress={() => navigation.navigate('Profile')} />
-          )
+          ),
+          headerStyle: { borderBottomWidth: 0 }
         };
       }
     },
@@ -186,7 +177,8 @@ const InboxStack = createStackNavigator(
           headerLeft: <GoBackIconButton onPress={() => navigation.goBack()} />,
           headerRight: (
             <OpenDrawerIconButton onPress={() => navigation.openDrawer()} />
-          )
+          ),
+          headerStyle: { borderBottomWidth: 0 }
         };
       }
     }
@@ -197,10 +189,17 @@ const InboxStack = createStackNavigator(
       tabBarIcon: ({ focused }) => (
         <TabBarIconWithBadge focused={focused} name="ios-mail" />
       )
-    }
+    },
+    // TODO come back to this
+    mode: 'card',
+    headerMode: 'screen',
+    headerTransitionPreset: 'fade-in-place',
+    headerBackTitleVisible: false,
+    headerLayoutPreset: 'center'
   }
 );
 
+// MainTabNavigator
 const MainTabNavigator = createBottomTabNavigator(
   {
     HomeStack,
@@ -213,13 +212,12 @@ const MainTabNavigator = createBottomTabNavigator(
         header: null
       };
     },
+    resetOnBlur: true,
     lazy: false,
     tabBarOptions: {
       showLabel: false
     }
   }
 );
-
-MainTabNavigator.path = '';
 
 export default MainTabNavigator;

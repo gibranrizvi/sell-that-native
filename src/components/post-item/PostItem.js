@@ -112,14 +112,14 @@ const PostItem = ({
                   <Ionicons
                     name="ios-trash"
                     size={24}
-                    color="grey"
+                    color="#555"
                     style={{ alignSelf: 'center' }}
                   />
                 ) : (
                   <Ionicons
                     name="ios-more"
                     size={24}
-                    color="grey"
+                    color="#555"
                     style={{ alignSelf: 'center' }}
                   />
                 )}
@@ -136,7 +136,7 @@ const PostItem = ({
     <View
       key={id}
       style={{
-        marginTop: noMargin ? 0 : 12,
+        marginTop: noMargin ? 0 : 8,
         shadowColor: noShadow ? 'white' : 'grey',
         shadowRadius: 12,
         shadowOpacity: 0.2,

@@ -44,7 +44,7 @@ const PostActions = ({ user, id, likes, postLiked, openPost, postsRef }) => {
               {postLiked ? (
                 <Ionicons name="ios-heart" color="orangered" size={28} />
               ) : (
-                <Ionicons name="ios-heart-empty" color="grey" size={28} />
+                <Ionicons name="ios-heart-empty" color="#555" size={28} />
               )}
             </View>
           </TouchableOpacity>
@@ -53,7 +53,7 @@ const PostActions = ({ user, id, likes, postLiked, openPost, postsRef }) => {
       <View style={{ flex: 1 }}>
         <TouchableOpacity onPress={() => openPost()}>
           <View>
-            <Ionicons name="ios-chatbubbles" color="grey" size={28} />
+            <Ionicons name="ios-chatbubbles" color="#555" size={28} />
           </View>
         </TouchableOpacity>
       </View>

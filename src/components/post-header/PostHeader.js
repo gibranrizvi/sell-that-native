@@ -41,7 +41,7 @@ const PostHeader = ({ openPost, created_at, created_by, navigation }) => {
           <Text
             style={{
               fontWeight: 'normal',
-              color: 'grey',
+              color: '#555',
               fontStyle: 'italic'
             }}
           >

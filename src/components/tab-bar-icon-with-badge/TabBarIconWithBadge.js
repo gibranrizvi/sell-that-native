@@ -9,7 +9,7 @@ const TabBarIconWithBadge = ({ name, focused }) => {
 
   return (
     <View>
-      <Ionicons name={name} size={32} color={focused ? 'black' : '#555'} />
+      <Ionicons name={name} size={32} color={focused ? 'orangered' : '#555'} />
       {unread && (
         <View
           style={{

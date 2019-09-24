@@ -11,8 +11,25 @@ import MainTabNavigator from './MainTabNavigator';
 import AuthScreen from '../screens/AuthScreen';
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 
+// MainDrawerNavigator
+const MainDrawerNavigator = createDrawerNavigator(
+  {
+    Main: MainTabNavigator
+  },
+  {
+    navigationOptions: () => {
+      return {
+        header: null
+      };
+    },
+    drawerPosition: 'right',
+    hideStatusBar: true,
+    drawerType: 'slide'
+  }
+);
+
 const AppStackNavigator = createStackNavigator({
-  Main: MainTabNavigator
+  Main: MainDrawerNavigator
 });
 
 export default createAppContainer(
