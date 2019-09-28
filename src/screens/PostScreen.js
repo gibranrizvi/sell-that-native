@@ -7,6 +7,8 @@ import { FirebaseContext } from '../firebase';
 const PostScreen = ({ navigation }) => {
   const { firestore, user } = React.useContext(FirebaseContext);
 
+  const postsRef = firestore.collection('posts');
+
   const { post } = navigation.state.params;
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'space-between' }}>
@@ -26,7 +28,7 @@ const PostScreen = ({ navigation }) => {
           noShadow
         />
       </ScrollView>
-      <CommentTextInput />
+      <CommentTextInput post={post} user={user} postsRef={postsRef} />
     </SafeAreaView>
   );
 };

@@ -2,8 +2,15 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const PostActions = ({ user, id, likes, postLiked, openPost, postsRef }) => {
-  const likeOrUnlikePost = (postId, likes, postLiked) => {
+const PostActions = ({
+  user,
+  postId,
+  likes,
+  postLiked,
+  openPost,
+  postsRef
+}) => {
+  const likeOrUnlikePost = () => {
     const postRef = postsRef.doc(`${postId}`);
 
     let updatedLikes;
@@ -37,9 +44,7 @@ const PostActions = ({ user, id, likes, postLiked, openPost, postsRef }) => {
     >
       {user && (
         <View style={{ flex: 1 }}>
-          <TouchableOpacity
-            onPress={() => likeOrUnlikePost(id, likes, postLiked)}
-          >
+          <TouchableOpacity onPress={() => likeOrUnlikePost()}>
             <View>
               {postLiked ? (
                 <Ionicons name="ios-heart" color="orangered" size={28} />

@@ -1,20 +1,21 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+import uuidv4 from 'uuid/v4';
 
 import TextInputWithIcon from '../text-input-with-icon/TextInputWithIcon';
 
-const CommentTextInput = () => {
+const CommentTextInput = ({ post, user, postsRef }) => {
   const [commentText, setCommentText] = React.useState('');
 
-  const addComment = (postId, comments) => {
-    const postRef = postsRef.doc(`${postId}`);
+  const addComment = () => {
+    const postRef = postsRef.doc(`${post.id}`);
 
     const { id, first_name, last_name, profile_picture } = user;
 
     const comment_id = uuidv4();
 
     const updatedComments = [
-      ...comments,
+      ...post.comments,
       {
         comment_id,
         commented_at: Date.now(),
@@ -41,7 +42,7 @@ const CommentTextInput = () => {
         value={commentText}
         onChangeText={value => setCommentText(value)}
         onSubmit={() => {
-          return addComment(id, comments);
+          return addComment();
         }}
         icon="ios-send"
         placeholder="Write a comment..."

@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
-import uuidv4 from 'uuid/v4';
 
 // Local imports
 import layout from '../constants/layout';

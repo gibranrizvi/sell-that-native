@@ -10,7 +10,8 @@ const CategoryTabItem = ({ name, first, last, selected, onSelectCategory }) => {
     <TouchableWithoutFeedback onPress={() => onSelectCategory(name)}>
       <View
         style={{
-          padding: 8,
+          paddingVertical: 6,
+          paddingHorizontal: 8,
           margin: 2,
           marginLeft: first ? 12 : 4,
           marginRight: last ? 12 : 0,
@@ -24,8 +25,7 @@ const CategoryTabItem = ({ name, first, last, selected, onSelectCategory }) => {
         <Text
           style={{
             color: selected === name ? 'white' : 'orangered',
-            fontSize: 16,
-            fontWeight: '600'
+            fontSize: 14
           }}
         >
           {name}

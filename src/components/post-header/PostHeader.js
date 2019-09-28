@@ -64,8 +64,8 @@ const PostHeader = ({ openPost, created_at, created_by, navigation }) => {
           <View>
             <Ionicons
               name="ios-more"
-              color="#555"
-              size={28}
+              color="#333"
+              size={24}
               style={{ alignSelf: 'center' }}
             />
           </View>
