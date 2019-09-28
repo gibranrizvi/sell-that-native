@@ -14,22 +14,21 @@ export default ({ left, right, text, pressed }) => {
       >
         {left && (
           <View style={{ flex: 1, alignItems: 'center' }}>
-            <Ionicons name="ios-arrow-round-back" color="#555" size={32} />
+            <Ionicons name="ios-arrow-round-back" color="#555" size={20} />
           </View>
         )}
         <View
           style={{
             flex: 10,
             alignItems: left ? 'flex-start' : 'flex-end',
-            paddingBottom: 4
+            paddingBottom: 2
           }}
         >
           <Text
             style={{
-              fontSize: 16,
+              fontSize: 12,
               fontWeight: '500',
-              color: '#555',
-              marginRight: 4
+              color: '#555'
             }}
           >
             {text}
@@ -37,7 +36,7 @@ export default ({ left, right, text, pressed }) => {
         </View>
         {right && (
           <View style={{ flex: 1, alignItems: 'center' }}>
-            <Ionicons name="ios-arrow-round-forward" color="#555" size={32} />
+            <Ionicons name="ios-arrow-round-forward" color="#555" size={20} />
           </View>
         )}
       </View>

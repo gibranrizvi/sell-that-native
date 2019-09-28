@@ -43,7 +43,7 @@ export default ({ uri, pickImage, openCamera, onDeletePress }) => {
           shadowRadius: 20,
           shadowOffset: { width: 0, height: 10 },
           shadowColor: 'black',
-          shadowOpacity: 0.4,
+          shadowOpacity: 0.2,
           elevation: 20
         }}
       >

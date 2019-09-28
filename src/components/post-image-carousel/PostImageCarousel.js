@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Image, ScrollView } from 'react-native';
 
 import layout from '../../constants/layout';
@@ -7,8 +7,6 @@ const { height, width } = layout.window;
 
 const PostImageCarousel = ({ images }) => {
   const [imageIndex, setImageIndex] = useState(0);
-
-  const numberOfImages = images.length;
 
   const handleHorizontalScroll = nativeEvent => {
     const scrollX = nativeEvent.contentOffset.x;

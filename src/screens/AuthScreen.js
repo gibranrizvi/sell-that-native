@@ -82,7 +82,8 @@ const AuthScreen = () => {
         .auth()
         .createUserWithEmailAndPassword(email, password);
 
-      const { uid, emailVerified } = user;
+      const { uid } = user;
+      const emailVerified = false;
       const role = 'subscriber';
 
       if (pictureURI) {
@@ -92,8 +93,8 @@ const AuthScreen = () => {
           firstName,
           lastName,
           pictureURI,
-          emailVerified,
-          role
+          role,
+          emailVerified
         );
       }
 
@@ -103,8 +104,8 @@ const AuthScreen = () => {
         first_name: firstName,
         last_name: lastName,
         profile_picture: 'default',
-        emailVerified,
-        role
+        role,
+        emailVerified
       };
 
       return await createUserProfileDocument(userData);

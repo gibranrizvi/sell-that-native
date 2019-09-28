@@ -1,9 +1,12 @@
 import React from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { TextInputMask } from 'react-native-masked-text';
 
 export default ({
   value,
   onChangeText,
+  type,
+  options,
   placeholder,
   secureTextEntry,
   dark,
@@ -24,9 +27,11 @@ export default ({
         backgroundColor: dark ? '#444' : 'white'
       }}
     >
-      <TextInput
-        onChangeText={value => onChangeText(value)}
+      <TextInputMask
+        type={type}
+        options={options}
         value={value}
+        onChangeText={onChangeText}
         placeholder={placeholder}
         secureTextEntry={secureTextEntry}
         multiline={multiline}

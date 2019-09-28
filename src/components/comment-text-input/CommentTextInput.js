@@ -48,7 +48,7 @@ const CommentTextInput = ({ post, user, postsRef }) => {
         placeholder="Write a comment..."
         autoCapitalize="sentences"
         multiline
-        numberOfLines={2}
+        numberOfLines={3}
         autoCorrect
         noShadow
       />

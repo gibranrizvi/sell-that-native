@@ -11,7 +11,8 @@ export const uploadProfilePicture = async (
   firstName,
   lastName,
   pictureURI,
-  role
+  role,
+  emailVerified
 ) => {
   const storageRef = firebase.storage().ref();
   const pictureRef = storageRef.child(
@@ -45,8 +46,8 @@ export const uploadProfilePicture = async (
       first_name: firstName,
       last_name: lastName,
       profile_picture: downloadURL,
-      emailVerified,
-      role
+      role,
+      emailVerified
     };
 
     return await createUserProfileDocument(userData);
@@ -74,7 +75,7 @@ export const createUserProfileDocument = async ({
     const isNewUser = true;
 
     // Notifications - two types, activities (likes and comments) and messages
-    const messages = [{ unread: true }];
+    const messages = [{ unread: true, from: {} }];
     const activity = [];
 
     try {

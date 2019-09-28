@@ -19,7 +19,6 @@ import {
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 import { Ionicons } from '@expo/vector-icons';
-// import Animated from 'react-native-reanimated';
 
 // Local imports
 import layout from '../constants/layout';
@@ -31,6 +30,8 @@ import CategoryTabScrollView from '../components/category-tab-scroll-view/Catego
 import TextInputField from '../components/text-input-field/TextInputField';
 import ButtonStandard from '../components/button-standard/ButtonStandard';
 import { createPostDocument } from '../firebase/firebase';
+import TextInputMaskField from '../components/text-input-mask-field/TextInputMaskField';
+import AddImagesCarousel from '../components/add-images-carousel/AddImagesCarousel';
 
 // Constants
 const { height, width } = layout.window;
@@ -38,13 +39,16 @@ const IS_IPHONE_X = height === 812 || height === 896;
 const STATUS_BAR_HEIGHT = Constants.statusBarHeight;
 
 const CreateScreen = ({ navigation }) => {
-  const { auth, user } = useContext(FirebaseContext);
+  const { user } = useContext(FirebaseContext);
 
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
-  const [price, setPrice] = useState(null);
+  const [price, setPrice] = useState('');
   const [condition, setCondition] = useState('');
   const [description, setDescription] = useState('');
+  const [images, setImages] = useState([
+    'https://hnsfpau.imgix.net/5/images/detailed/100/iPhone-11-Pro-Grey-01.jpg'
+  ]);
   const [loading, setLoading] = useState(false);
 
   const submitPost = () => {
@@ -77,9 +81,10 @@ const CreateScreen = ({ navigation }) => {
     createPostDocument(newPost, user).then(() => {
       setTitle('');
       setCategory('');
-      setPrice(null);
+      setPrice('');
       setCondition('');
       setDescription('');
+      setImages([]);
       setLoading(false);
       return navigation.navigate('Home');
     });
@@ -97,7 +102,7 @@ const CreateScreen = ({ navigation }) => {
 
         {/* Product title */}
         <View style={styles.sectionView}>
-          <Text style={styles.subHeadingText}>Title</Text>
+          <Text style={styles.subHeadingText}>Enter a title</Text>
           <View style={styles.formFieldsView}>
             <TextInputField
               value={title}
@@ -130,38 +135,56 @@ const CreateScreen = ({ navigation }) => {
 
         {/* Product price */}
         <View style={styles.sectionView}>
-          <Text style={styles.subHeadingText}>Price</Text>
+          <Text style={styles.subHeadingText}>Enter a price</Text>
           <View style={styles.formFieldsView}>
-            <TextInputField
+            <TextInputMaskField
+              type="money"
+              options={{
+                precision: 2,
+                separator: '.',
+                delimiter: ',',
+                unit: 'SR ',
+                suffixUnit: ''
+              }}
               value={price}
               onChangeText={value => setPrice(value)}
               placeholder="SR 0.00 *"
+              keyboardType="numeric"
             />
           </View>
         </View>
 
         {/* Product condition */}
         <View style={styles.sectionView}>
-          <Text style={styles.subHeadingText}>Condition</Text>
+          <Text style={styles.subHeadingText}>Item condition</Text>
           <View style={styles.formFieldsView}>
             <TextInputField
               value={condition}
               onChangeText={value => setCondition(value)}
-              placeholder="Select condition *"
+              placeholder="Condition *"
             />
           </View>
         </View>
 
         {/* Product description */}
         <View style={styles.sectionView}>
-          <Text style={styles.subHeadingText}>Description</Text>
+          <Text style={styles.subHeadingText}>Add a short description</Text>
           <View style={styles.formFieldsView}>
             <TextInputField
               value={description}
               onChangeText={value => setDescription(value)}
-              placeholder="Add a description"
+              placeholder="Description"
             />
           </View>
+        </View>
+
+        {/* Product images */}
+        <View style={styles.sectionView}>
+          <Text style={styles.subHeadingText}>Add</Text>
+          <AddImagesCarousel
+            setImages={images => setImages(images)}
+            images={images}
+          />
         </View>
 
         {/* Submit button */}
