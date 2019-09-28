@@ -8,8 +8,17 @@ import layout from '../../constants/layout';
 
 const { height, width } = layout.window;
 
-const AddImageItem = ({ first, last, image }) => {
+const AddImageItem = ({
+  first,
+  last,
+  image,
+  disabled,
+  addImage,
+  removeImage,
+  imageIndex
+}) => {
   let actionSheet = React.useRef(null).current;
+  let removeImageActionSheet = React.useRef(null).current;
 
   const renderImage = () => (
     <View
@@ -45,29 +54,51 @@ const AddImageItem = ({ first, last, image }) => {
         marginLeft: first ? 12 : 0,
         marginRight: last ? 12 : 6,
         borderWidth: 2,
-        borderColor: 'grey',
+        borderColor: disabled ? '#CCCCCC' : 'grey',
         borderStyle: 'dashed',
         backgroundColor: '#FAFAFA',
         justifyContent: 'center',
         alignItems: 'center'
       }}
     >
-      <Ionicons name="ios-image" size={32} color="grey" />
+      <Ionicons
+        name="ios-image"
+        size={32}
+        color={disabled ? '#CCCCCC' : 'grey'}
+      />
     </View>
   );
 
   return (
     <TouchableOpacity
-      onPress={() => actionSheet.show()}
-      disabled={image && true}
+      onPress={() =>
+        image ? removeImageActionSheet.show() : actionSheet.show()
+      }
+      disabled={disabled}
     >
       <ActionSheet
         ref={ref => (actionSheet = ref)}
-        title="Choose image from:"
+        title="Select image from"
         options={['Camera', 'Library', 'Cancel']}
         cancelButtonIndex={2}
         onPress={index => {
-          console.log(index);
+          if (index === 0) {
+            return addImage(
+              'http://cdn.iphonehacks.com/wp-content/uploads/2019/09/iphone11-pro-unboxing6.jpg'
+            );
+          }
+        }}
+      />
+      <ActionSheet
+        ref={ref => (removeImageActionSheet = ref)}
+        title="Remove this image"
+        options={['Remove', 'Cancel']}
+        cancelButtonIndex={1}
+        destructiveButtonIndex={0}
+        onPress={index => {
+          if (index === 0) {
+            return removeImage(imageIndex);
+          }
         }}
       />
       {image ? renderImage() : renderImagePlaceholder()}

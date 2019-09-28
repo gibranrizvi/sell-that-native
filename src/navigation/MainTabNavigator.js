@@ -95,9 +95,7 @@ const CreateStack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         return {
           headerTransparent: true,
-          // headerStyle: {
-          //   background: 'transparent'
-          // },
+          headerStyle: {},
           headerRight: (
             <GoToProfileButton onPress={() => navigation.navigate('Profile')} />
           )

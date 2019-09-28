@@ -46,9 +46,7 @@ const CreateScreen = ({ navigation }) => {
   const [price, setPrice] = useState('');
   const [condition, setCondition] = useState('');
   const [description, setDescription] = useState('');
-  const [images, setImages] = useState([
-    'https://hnsfpau.imgix.net/5/images/detailed/100/iPhone-11-Pro-Grey-01.jpg'
-  ]);
+  const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const submitPost = () => {
@@ -156,7 +154,7 @@ const CreateScreen = ({ navigation }) => {
 
         {/* Product condition */}
         <View style={styles.sectionView}>
-          <Text style={styles.subHeadingText}>Item condition</Text>
+          <Text style={styles.subHeadingText}>Select item condition</Text>
           <View style={styles.formFieldsView}>
             <TextInputField
               value={condition}
@@ -180,9 +178,13 @@ const CreateScreen = ({ navigation }) => {
 
         {/* Product images */}
         <View style={styles.sectionView}>
-          <Text style={styles.subHeadingText}>Add</Text>
+          <Text style={styles.subHeadingText}>Add item images</Text>
           <AddImagesCarousel
-            setImages={images => setImages(images)}
+            addImage={image => setImages([...images, image])}
+            removeImage={index => {
+              const filteredImages = images.splice(index, 1);
+              setImages(filteredImages);
+            }}
             images={images}
           />
         </View>
