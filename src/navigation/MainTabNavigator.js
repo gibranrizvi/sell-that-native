@@ -30,7 +30,7 @@ export const HomeStack = createStackNavigator(
                 fontSize: 32,
                 color: 'orangered',
                 marginHorizontal: 12,
-                bottom: Platform.OS === 'android' ? -2 : 0
+                bottom: Platform.OS === 'android' ? -4 : 0
               }}
             >
               Sell that

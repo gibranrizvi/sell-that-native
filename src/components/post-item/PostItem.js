@@ -1,13 +1,8 @@
 import React from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
-import { formatDistanceToNow } from 'date-fns';
+import { View } from 'react-native';
 
 import PostHeader from '../post-header/PostHeader';
 import PostImageCarousel from '../post-image-carousel/PostImageCarousel';
-import ButtonRounded from '../button-rounded/ButtonRounded';
-import TextInputWithIcon from '../text-input-with-icon/TextInputWithIcon';
-import { Ionicons } from '@expo/vector-icons';
-import CommentTextInput from '../comment-text-input/CommentTextInput';
 import PostActions from '../post-actions/PostActions';
 import PostDetails from '../post-details/PostDetails';
 import PostComments from '../post-comments/PostComments';
@@ -100,6 +95,7 @@ const PostItem = ({
           comments={comments}
           user={user}
           postsRef={postsRef}
+          navigation={navigation}
         />
       )}
     </View>

@@ -4,7 +4,7 @@ import ButtonRounded from '../button-rounded/ButtonRounded';
 import { Ionicons } from '@expo/vector-icons';
 import { formatDistanceToNow } from 'date-fns';
 
-const PostComments = ({ postId, comments, user, postsRef }) => {
+const PostComments = ({ postId, comments, user, postsRef, navigation }) => {
   const removeComment = commentIdToBeRemoved => {
     const postRef = postsRef.doc(`${postId}`);
 

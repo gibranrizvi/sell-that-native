@@ -17,6 +17,7 @@ import {
   Animated
 } from 'react-native';
 import * as Permissions from 'expo-permissions';
+import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -46,10 +47,7 @@ const CreateScreen = ({ navigation }) => {
   const [price, setPrice] = useState('');
   const [condition, setCondition] = useState('');
   const [description, setDescription] = useState('');
-  const [images, setImages] = useState([
-    'https://hnsfpau.imgix.net/5/images/detailed/100/iPhone-11-Pro-Grey-01.jpg',
-    'https://pisces.bbystatic.com/image2/BestBuy_US/images/products/6341/6341561_sd.jpg'
-  ]);
+  const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const submitPost = () => {
@@ -70,13 +68,8 @@ const CreateScreen = ({ navigation }) => {
       category,
       price,
       condition,
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus rem doloribus, adipisci pariatur sint ipsum voluptatem neque amet.',
-      images: [
-        'https://hnsfpau.imgix.net/5/images/detailed/100/iPhone-11-Pro-Grey-01.jpg',
-        'https://pisces.bbystatic.com/image2/BestBuy_US/images/products/6341/6341561_sd.jpg',
-        'http://cdn.iphonehacks.com/wp-content/uploads/2019/09/iphone11-pro-unboxing6.jpg'
-      ]
+      description,
+      images
     };
 
     createPostDocument(newPost, user).then(() => {
@@ -169,7 +162,7 @@ const CreateScreen = ({ navigation }) => {
 
         {/* Product description */}
         <View style={styles.sectionView}>
-          <Text style={styles.subHeadingText}>Add a short description</Text>
+          <Text style={styles.subHeadingText}>Write a short description</Text>
           <View style={styles.formFieldsView}>
             <TextInputField
               value={description}
@@ -181,7 +174,7 @@ const CreateScreen = ({ navigation }) => {
 
         {/* Product images */}
         <View style={styles.sectionView}>
-          <Text style={styles.subHeadingText}>Add item images</Text>
+          <Text style={styles.subHeadingText}>Add images</Text>
           <AddImagesCarousel
             addImage={imageToAdd =>
               images.filter(image => image === imageToAdd).length === 0
@@ -230,7 +223,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
     fontWeight: '500',
     color: 'black',
-    fontSize: 12
+    fontSize: 14
   },
   categoryScrollView: {
     marginVertical: 8

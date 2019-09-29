@@ -1,8 +1,17 @@
-import React from 'react';
-import { View, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Linking,
+  Platform,
+  Alert
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
 import ActionSheet from 'react-native-actionsheet';
+import * as Permissions from 'expo-permissions';
+import * as ImagePicker from 'expo-image-picker';
 
 import layout from '../../constants/layout';
 
@@ -18,6 +27,88 @@ const AddImageItem = ({
 }) => {
   let actionSheet = React.useRef(null).current;
   let removeImageActionSheet = React.useRef(null).current;
+
+  const [cameraPermissions, setCameraPermissions] = useState(null);
+  const [cameraRollPermissions, setCameraRollPermissions] = useState(null);
+
+  const openCamera = async () => {
+    try {
+      if (!cameraPermissions) {
+        _getCameraPermissionsAsync();
+      }
+
+      if (!cameraRollPermissions) {
+        _getCameraRollPermissionsAsync();
+      }
+
+      const result = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        aspect: [1, 1]
+      });
+
+      if (!result.cancelled) {
+        return result.uri;
+      }
+    } catch (error) {
+      return console.log(error);
+    }
+  };
+
+  const openLibrary = async () => {
+    try {
+      if (!cameraRollPermissions) {
+        _getCameraRollPermissionsAsync();
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1]
+      });
+
+      if (!result.cancelled) {
+        return result.uri;
+      }
+    } catch (error) {
+      return console.log(error);
+    }
+  };
+
+  const _getCameraPermissionsAsync = async () => {
+    if (Platform.OS === 'ios') {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA);
+
+      setCameraPermissions(status === 'granted');
+
+      if (status !== 'granted') {
+        console.log('Permission to access camera has been denied');
+        return Alert.alert(
+          'Enable Camera Permissions',
+          'Go to settings',
+          [{ text: 'OK', onPress: () => Linking.openURL('app-settings:') }],
+          { cancelable: false }
+        );
+      }
+    }
+  };
+
+  const _getCameraRollPermissionsAsync = async () => {
+    if (Platform.OS === 'ios') {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+      setCameraRollPermissions(status === 'granted');
+
+      if (status !== 'granted') {
+        console.log('Permission to access camera roll has been denied');
+        return Alert.alert(
+          'Enable Camera Roll Permissions',
+          'Go to settings',
+          [{ text: 'OK', onPress: () => Linking.openURL('app-settings:') }],
+          { cancelable: false }
+        );
+      }
+    }
+  };
 
   const renderImage = () => (
     <View
@@ -82,9 +173,9 @@ const AddImageItem = ({
         cancelButtonIndex={2}
         onPress={index => {
           if (index === 0) {
-            return addImage(
-              'http://cdn.iphonehacks.com/wp-content/uploads/2019/09/iphone11-pro-unboxing6.jpg'
-            );
+            return openCamera();
+          } else if (index === 1) {
+            return openLibrary();
           }
         }}
       />

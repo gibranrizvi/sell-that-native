@@ -40,7 +40,7 @@ const SignInProviders = {
 const { width, height } = layout.window;
 
 const AuthScreen = () => {
-  const { auth, firestore } = useContext(FirebaseContext);
+  const { auth } = useContext(FirebaseContext);
 
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -56,8 +56,8 @@ const AuthScreen = () => {
     pictureURI: ''
   });
   const [page, setPage] = useState(1);
-  const [cameraRollPermission, setCameraRollPermission] = useState(null);
-  const [cameraPermission, setCameraPermission] = useState(null);
+  const [cameraRollPermissions, setCameraRollPermissions] = useState(null);
+  const [cameraPermission, setCameraPermissions] = useState(null);
 
   let horizontalScroll = useRef(null).current;
 
@@ -255,11 +255,11 @@ const AuthScreen = () => {
   };
 
   // Function 7: Get camera roll permissions method
-  const _getCameraRollPermissionAsync = async () => {
+  const _getCameraRollPermissionsAsync = async () => {
     if (Platform.OS === 'ios') {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
-      setCameraRollPermission(status === 'granted');
+      setCameraRollPermissions(status === 'granted');
 
       if (status !== 'granted') {
         console.log('Permission to access camera roll has been denied');
@@ -274,11 +274,11 @@ const AuthScreen = () => {
   };
 
   // Function 8: Get camera permissions method
-  const _getCameraPermissionAsync = async () => {
+  const _getCameraPermissionsAsync = async () => {
     if (Platform.OS === 'ios') {
       const { status } = await Permissions.askAsync(Permissions.CAMERA);
 
-      setCameraPermission(status === 'granted');
+      setCameraPermissions(status === 'granted');
 
       if (status !== 'granted') {
         console.log('Permission to access camera has been denied');
@@ -295,8 +295,8 @@ const AuthScreen = () => {
   // Function 9: Open camera roll method
   const _pickImage = async () => {
     try {
-      if (!cameraRollPermission) {
-        _getCameraRollPermissionAsync();
+      if (!cameraRollPermissions) {
+        _getCameraRollPermissionsAsync();
       }
 
       const result = await ImagePicker.launchImageLibraryAsync({
@@ -316,12 +316,12 @@ const AuthScreen = () => {
   // Function 10: Open camera method TODO check this on real device
   const _openCamera = async () => {
     try {
-      if (!cameraRollPermission) {
-        _getCameraRollPermissionAsync();
+      if (!cameraRollPermissions) {
+        _getCameraRollPermissionsAsync();
       }
 
       if (!cameraPermission) {
-        _getCameraPermissionAsync();
+        _getCameraPermissionsAsync();
       }
 
       const result = await ImagePicker.launchCameraAsync({

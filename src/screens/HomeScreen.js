@@ -9,7 +9,8 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   ActivityIndicator,
-  Animated
+  Animated,
+  StatusBar
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
@@ -81,6 +82,8 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.root}>
+      {/* <StatusBar barStyle="default" /> */}
+
       {/* Posts */}
       {!posts ? (
         <View
