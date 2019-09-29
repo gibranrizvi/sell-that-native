@@ -14,8 +14,7 @@ const AddImageItem = ({
   image,
   disabled,
   addImage,
-  removeImage,
-  imageIndex
+  removeImage
 }) => {
   let actionSheet = React.useRef(null).current;
   let removeImageActionSheet = React.useRef(null).current;
@@ -97,7 +96,7 @@ const AddImageItem = ({
         destructiveButtonIndex={0}
         onPress={index => {
           if (index === 0) {
-            return removeImage(imageIndex);
+            return removeImage(image);
           }
         }}
       />

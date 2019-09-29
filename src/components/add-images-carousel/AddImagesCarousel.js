@@ -13,7 +13,6 @@ const AddImagesCarousel = ({ addImage, removeImage, images }) => {
         last={index === maximumSlots - 1}
         image={image}
         removeImage={removeImage}
-        imageIndex={index}
       />
     ));
   };

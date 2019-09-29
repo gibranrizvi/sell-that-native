@@ -46,7 +46,10 @@ const CreateScreen = ({ navigation }) => {
   const [price, setPrice] = useState('');
   const [condition, setCondition] = useState('');
   const [description, setDescription] = useState('');
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState([
+    'https://hnsfpau.imgix.net/5/images/detailed/100/iPhone-11-Pro-Grey-01.jpg',
+    'https://pisces.bbystatic.com/image2/BestBuy_US/images/products/6341/6341561_sd.jpg'
+  ]);
   const [loading, setLoading] = useState(false);
 
   const submitPost = () => {
@@ -180,10 +183,18 @@ const CreateScreen = ({ navigation }) => {
         <View style={styles.sectionView}>
           <Text style={styles.subHeadingText}>Add item images</Text>
           <AddImagesCarousel
-            addImage={image => setImages([...images, image])}
-            removeImage={index => {
-              const filteredImages = images.splice(index, 1);
-              setImages(filteredImages);
+            addImage={imageToAdd =>
+              images.filter(image => image === imageToAdd).length === 0
+                ? setImages([...images, imageToAdd])
+                : alert(
+                    'You have already added this image, please select another'
+                  )
+            }
+            removeImage={imageToBeRemoved => {
+              const filteredImages = images.filter(
+                image => image !== imageToBeRemoved
+              );
+              return setImages(filteredImages);
             }}
             images={images}
           />
