@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   View,
+  Text,
   TouchableOpacity,
   Image,
   StyleSheet,
@@ -25,49 +26,51 @@ const AddImageItem = ({
   addImage,
   removeImage
 }) => {
-  let actionSheet = React.useRef(null).current;
+  let addImageActionSheet = React.useRef(null).current;
   let removeImageActionSheet = React.useRef(null).current;
 
   const [cameraPermissions, setCameraPermissions] = useState(null);
   const [cameraRollPermissions, setCameraRollPermissions] = useState(null);
 
-  const openCamera = async () => {
+  const _openCamera = async () => {
     try {
       if (!cameraPermissions) {
-        _getCameraPermissionsAsync();
+        await _getCameraPermissionsAsync();
       }
 
-      if (!cameraRollPermissions) {
-        _getCameraRollPermissionsAsync();
-      }
+      // if (!cameraRollPermissions) {
+      //   await _getCameraRollPermissionsAsync();
+      // }
 
       const result = await ImagePicker.launchCameraAsync({
         allowsEditing: true,
-        aspect: [1, 1]
+        aspect: [4, 3],
+        quality: 0.2
       });
 
       if (!result.cancelled) {
-        return result.uri;
+        return addImage(result.uri);
       }
     } catch (error) {
       return console.log(error);
     }
   };
 
-  const openLibrary = async () => {
+  const _openLibrary = async () => {
     try {
       if (!cameraRollPermissions) {
-        _getCameraRollPermissionsAsync();
+        await _getCameraRollPermissionsAsync();
       }
 
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        aspect: [1, 1]
+        aspect: [4, 3],
+        quality: 0.2
       });
 
       if (!result.cancelled) {
-        return result.uri;
+        return addImage(result.uri);
       }
     } catch (error) {
       return console.log(error);
@@ -78,15 +81,26 @@ const AddImageItem = ({
     if (Platform.OS === 'ios') {
       const { status } = await Permissions.askAsync(Permissions.CAMERA);
 
-      setCameraPermissions(status === 'granted');
-
-      if (status !== 'granted') {
+      if (status === 'granted') {
+        return setCameraPermissions(true);
+      } else if (status !== 'granted') {
+        setCameraPermissions(false);
         console.log('Permission to access camera has been denied');
         return Alert.alert(
-          'Enable Camera Permissions',
-          'Go to settings',
-          [{ text: 'OK', onPress: () => Linking.openURL('app-settings:') }],
-          { cancelable: false }
+          'Sell That does not have access to your camera. To enable access, tab Settings and turn on Camera.',
+          '',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel pressed'),
+              style: 'cancel'
+            },
+            {
+              text: 'Settings',
+              onPress: () => Linking.openURL('app-settings:')
+            }
+          ],
+          { cancelable: true }
         );
       }
     }
@@ -96,15 +110,26 @@ const AddImageItem = ({
     if (Platform.OS === 'ios') {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
-      setCameraRollPermissions(status === 'granted');
-
-      if (status !== 'granted') {
+      if (status === 'granted') {
+        return setCameraRollPermissions(true);
+      } else if (status !== 'granted') {
+        setCameraRollPermissions(false);
         console.log('Permission to access camera roll has been denied');
         return Alert.alert(
-          'Enable Camera Roll Permissions',
-          'Go to settings',
-          [{ text: 'OK', onPress: () => Linking.openURL('app-settings:') }],
-          { cancelable: false }
+          'Sell That does not have access to your photos. To enable access, tab Settings and turn on Photos.',
+          '',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel pressed'),
+              style: 'cancel'
+            },
+            {
+              text: 'Settings',
+              onPress: () => Linking.openURL('app-settings:')
+            }
+          ],
+          { cancelable: true }
         );
       }
     }
@@ -162,26 +187,26 @@ const AddImageItem = ({
   return (
     <TouchableOpacity
       onPress={() =>
-        image ? removeImageActionSheet.show() : actionSheet.show()
+        image ? removeImageActionSheet.show() : addImageActionSheet.show()
       }
       disabled={disabled}
     >
       <ActionSheet
-        ref={ref => (actionSheet = ref)}
-        title="Select image from"
-        options={['Camera', 'Library', 'Cancel']}
+        ref={ref => (addImageActionSheet = ref)}
+        options={['Camera', 'Photo Library', 'Cancel']}
         cancelButtonIndex={2}
         onPress={index => {
           if (index === 0) {
-            return openCamera();
+            return _openCamera();
           } else if (index === 1) {
-            return openLibrary();
+            return _openLibrary();
           }
         }}
+        tintColor="royalblue"
       />
+
       <ActionSheet
         ref={ref => (removeImageActionSheet = ref)}
-        title="Remove this image"
         options={['Remove', 'Cancel']}
         cancelButtonIndex={1}
         destructiveButtonIndex={0}
@@ -190,6 +215,7 @@ const AddImageItem = ({
             return removeImage(image);
           }
         }}
+        tintColor="royalblue"
       />
       {image ? renderImage() : renderImagePlaceholder()}
     </TouchableOpacity>

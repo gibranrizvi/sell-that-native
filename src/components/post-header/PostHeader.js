@@ -1,11 +1,14 @@
 import React from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import ActionSheet from 'react-native-actionsheet';
 import { formatDistanceToNow } from 'date-fns';
 
 import ButtonRounded from '../button-rounded/ButtonRounded';
 import { Ionicons } from '@expo/vector-icons';
 
 const PostHeader = ({ openPost, created_at, created_by, navigation }) => {
+  let postOptionsActionSheet = React.useRef(null).current;
+
   return (
     <View
       style={{
@@ -15,6 +18,18 @@ const PostHeader = ({ openPost, created_at, created_by, navigation }) => {
         paddingHorizontal: 12
       }}
     >
+      <ActionSheet
+        ref={ref => (postOptionsActionSheet = ref)}
+        options={['Message Seller', 'Save Post', 'Report Post', 'Cancel']}
+        cancelButtonIndex={3}
+        destructiveButtonIndex={2}
+        onPress={index => {
+          if (index === 0) {
+            // TODO
+          }
+        }}
+        tintColor="royalblue"
+      />
       <View style={{ flex: 1 }}>
         <ButtonRounded
           onPress={() => navigation.navigate('Profile')}
@@ -55,12 +70,7 @@ const PostHeader = ({ openPost, created_at, created_by, navigation }) => {
           flex: 1
         }}
       >
-        <TouchableOpacity
-          onPress={() =>
-            // TODO open dialog modal with options for contact seller, report post
-            openPost()
-          }
-        >
+        <TouchableOpacity onPress={() => postOptionsActionSheet.show()}>
           <View>
             <Ionicons
               name="ios-more"

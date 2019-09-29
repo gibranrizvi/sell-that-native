@@ -6,7 +6,6 @@ import {
   View,
   SafeAreaView,
   Text,
-  Linking,
   AppState,
   Alert,
   ActivityIndicator,
@@ -16,10 +15,7 @@ import {
   Button,
   Animated
 } from 'react-native';
-import * as Permissions from 'expo-permissions';
-import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
-import { Ionicons } from '@expo/vector-icons';
 
 // Local imports
 import layout from '../constants/layout';

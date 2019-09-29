@@ -120,6 +120,7 @@ export const createPostDocument = async (postData, currentUser) => {
     const sold = false;
     const likes = [];
     const comments = [];
+    const reports = [];
     const created_at = Date.now();
     const created_by = currentUser;
 
@@ -129,6 +130,7 @@ export const createPostDocument = async (postData, currentUser) => {
         sold,
         likes,
         comments,
+        reports,
         created_at,
         created_by
       });

@@ -79,7 +79,7 @@ export const HomeStack = createStackNavigator(
       };
     },
     // TODO come back to this
-    mode: 'modal',
+    mode: 'card',
     headerMode: 'screen',
     // headerTransitionPreset: 'fade-in-place',
     headerBackTitleVisible: false,
@@ -133,7 +133,7 @@ const CreateStack = createStackNavigator(
       };
     },
     // TODO come back to this
-    mode: 'modal',
+    mode: 'card',
     headerMode: 'screen',
     // headerTransitionPreset: 'fade-in-place',
     headerBackTitleVisible: false,
@@ -183,7 +183,7 @@ const InboxStack = createStackNavigator(
       };
     },
     // TODO come back to this
-    mode: 'modal',
+    mode: 'card',
     headerMode: 'screen',
     // headerTransitionPreset: 'fade-in-place',
     headerBackTitleVisible: false,
