@@ -10,8 +10,8 @@ const useAuth = () => {
       if (user) {
         const userRef = firestore.doc(`users/${user.uid}`);
 
-        unsubscribeFromUserSnapshot = userRef.onSnapshot(snapshot => {
-          setCurrentUser({
+        unsubscribeFromUserSnapshot = userRef.onSnapshot(async snapshot => {
+          await setCurrentUser({
             id: snapshot.id,
             ...snapshot.data()
           });
@@ -22,8 +22,8 @@ const useAuth = () => {
     });
 
     return () => {
-      unsubscribeFromUserSnapshot();
       unsubscribe();
+      unsubscribeFromUserSnapshot();
     };
   }, []);
 

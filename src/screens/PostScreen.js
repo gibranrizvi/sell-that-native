@@ -14,7 +14,6 @@ const PostScreen = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1, justifyContent: 'space-between' }}>
       <ScrollView
         contentContainerStyle={{
-          // TODO fix hard-coded value
           paddingBottom: 32
         }}
       >

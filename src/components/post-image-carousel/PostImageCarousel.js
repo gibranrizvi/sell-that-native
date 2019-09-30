@@ -19,6 +19,7 @@ const PostImageCarousel = ({ images }) => {
       <ScrollView
         horizontal
         pagingEnabled
+        bounces={false}
         showsHorizontalScrollIndicator={false}
         scrollEventThrottle={16}
         onScroll={({ nativeEvent }) => handleHorizontalScroll(nativeEvent)}

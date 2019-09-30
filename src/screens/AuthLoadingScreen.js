@@ -13,14 +13,14 @@ const AuthLoadingScreen = ({ navigation }) => {
   const { navigate } = navigation;
 
   useEffect(() => {
+    const isAuthenticated = async () => {
+      await auth.onAuthStateChanged(user => {
+        return user ? navigate('Home') : navigate('Auth');
+      });
+    };
+
     isAuthenticated();
   }, []);
-
-  const isAuthenticated = () => {
-    auth.onAuthStateChanged(user => {
-      return user ? navigate('Home') : navigate('Auth');
-    });
-  };
 
   return (
     <View style={styles.container}>

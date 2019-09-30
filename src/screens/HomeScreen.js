@@ -45,8 +45,8 @@ const HomeScreen = ({ navigation }) => {
   const getPosts = () => {
     const unsubscribe = postsRef
       .orderBy('created_at', 'desc')
-      .onSnapshot(snapshot => {
-        const posts = snapshot.docs.map(doc => {
+      .onSnapshot(async snapshot => {
+        const posts = await snapshot.docs.map(doc => {
           return { id: doc.id, ...doc.data() };
         });
 
