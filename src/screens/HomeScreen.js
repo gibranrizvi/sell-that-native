@@ -30,31 +30,31 @@ const IS_IPHONE_X = height === 812 || height === 896;
 
 // HomeScreen component
 const HomeScreen = ({ navigation }) => {
-  const { firestore, user } = useContext(FirebaseContext);
+  const { firestore, user, posts } = useContext(FirebaseContext);
 
-  const [posts, setPosts] = useState(null);
+  // const [posts, setPosts] = useState(null);
 
-  const postsRef = firestore.collection('posts');
+  // const postsRef = firestore.collection('posts');
 
-  useEffect(() => {
-    const unsubscribe = getPosts();
+  // useEffect(() => {
+  //   const fetchPosts = () => {
+  //     const unsubscribe = postsRef
+  //       .orderBy('created_at', 'desc')
+  //       .onSnapshot(async snapshot => {
+  //         const posts = await snapshot.docs.map(doc => {
+  //           return { id: doc.id, ...doc.data() };
+  //         });
 
-    return () => unsubscribe();
-  }, []);
+  //         setPosts(posts);
+  //       });
 
-  const getPosts = () => {
-    const unsubscribe = postsRef
-      .orderBy('created_at', 'desc')
-      .onSnapshot(async snapshot => {
-        const posts = await snapshot.docs.map(doc => {
-          return { id: doc.id, ...doc.data() };
-        });
+  //     return unsubscribe;
+  //   };
 
-        setPosts(posts);
-      });
+  //   const unsubscribe = fetchPosts();
 
-    return unsubscribe;
-  };
+  //   return () => unsubscribe();
+  // }, []);
 
   const renderPosts = () => {
     if (posts.length === 0) {

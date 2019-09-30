@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
@@ -13,6 +13,33 @@ export default function App(props) {
   const user = useAuth();
   console.log(user);
 
+  const [posts, setPosts] = useState(null);
+  const postsRef = firestore.collection('posts');
+
+  useEffect(() => {
+    let unsubscribe = () => {};
+
+    if (user) {
+      const fetchPosts = () => {
+        const unsubscribe = postsRef
+          .orderBy('created_at', 'desc')
+          .onSnapshot(async snapshot => {
+            const posts = await snapshot.docs.map(doc => {
+              return { id: doc.id, ...doc.data() };
+            });
+
+            setPosts(posts);
+          });
+
+        return unsubscribe;
+      };
+
+      unsubscribe = fetchPosts();
+    }
+
+    return () => unsubscribe();
+  }, [user]);
+
   const [isLoadingComplete, setLoadingComplete] = useState(false);
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {
@@ -25,7 +52,7 @@ export default function App(props) {
     );
   } else {
     return (
-      <FirebaseContext.Provider value={{ user, auth, firestore }}>
+      <FirebaseContext.Provider value={{ user, auth, firestore, posts }}>
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <AppNavigator />

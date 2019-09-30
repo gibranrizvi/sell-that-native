@@ -37,7 +37,7 @@ const PostItem = ({
   };
 
   const openPost = () => {
-    navigation.navigate('Post', { post });
+    navigation.navigate('Post', { id });
   };
 
   const postLiked = checkIfLiked(likes);
