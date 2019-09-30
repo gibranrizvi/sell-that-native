@@ -32,30 +32,6 @@ const IS_IPHONE_X = height === 812 || height === 896;
 const HomeScreen = ({ navigation }) => {
   const { firestore, user, posts } = useContext(FirebaseContext);
 
-  // const [posts, setPosts] = useState(null);
-
-  // const postsRef = firestore.collection('posts');
-
-  // useEffect(() => {
-  //   const fetchPosts = () => {
-  //     const unsubscribe = postsRef
-  //       .orderBy('created_at', 'desc')
-  //       .onSnapshot(async snapshot => {
-  //         const posts = await snapshot.docs.map(doc => {
-  //           return { id: doc.id, ...doc.data() };
-  //         });
-
-  //         setPosts(posts);
-  //       });
-
-  //     return unsubscribe;
-  //   };
-
-  //   const unsubscribe = fetchPosts();
-
-  //   return () => unsubscribe();
-  // }, []);
-
   const renderPosts = () => {
     if (posts.length === 0) {
       return (

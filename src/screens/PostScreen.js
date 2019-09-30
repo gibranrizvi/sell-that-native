@@ -13,7 +13,6 @@ const PostScreen = ({ navigation }) => {
 
   useEffect(() => {
     const post = posts.find(post => post.id === id);
-    console.log(post);
     setPost(post);
   }, [posts]);
 

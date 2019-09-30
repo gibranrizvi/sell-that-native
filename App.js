@@ -8,37 +8,11 @@ import { Ionicons } from '@expo/vector-icons';
 import AppNavigator from './src/navigation/AppNavigator';
 import { FirebaseContext, auth, firestore } from './src/firebase';
 import useAuth from './src/hooks/useAuth';
+import useFetchPosts from './src/hooks/useFetchPosts';
 
 export default function App(props) {
   const user = useAuth();
-  console.log(user);
-
-  const [posts, setPosts] = useState(null);
-  const postsRef = firestore.collection('posts');
-
-  useEffect(() => {
-    let unsubscribe = () => {};
-
-    if (user) {
-      const fetchPosts = () => {
-        const unsubscribe = postsRef
-          .orderBy('created_at', 'desc')
-          .onSnapshot(async snapshot => {
-            const posts = await snapshot.docs.map(doc => {
-              return { id: doc.id, ...doc.data() };
-            });
-
-            setPosts(posts);
-          });
-
-        return unsubscribe;
-      };
-
-      unsubscribe = fetchPosts();
-    }
-
-    return () => unsubscribe();
-  }, [user]);
+  const posts = useFetchPosts(user);
 
   const [isLoadingComplete, setLoadingComplete] = useState(false);
 
