@@ -4,7 +4,7 @@ import firebase, {
   uploadProfilePicture,
   createUserProfileDocument
 } from './firebase';
-import FirebaseContext from './context';
+import FirebaseContext from '../contexts/FirebaseContext';
 
 export {
   FirebaseContext,

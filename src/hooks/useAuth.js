@@ -1,30 +1,27 @@
 import { useEffect, useState } from 'react';
-import { auth, firestore } from '../firebase';
+import { auth, firestore, createUserProfileDocument } from '../firebase';
 
 const useAuth = () => {
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    let unsubscribeFromUserSnapshot;
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      if (user) {
-        const userRef = firestore.doc(`users/${user.uid}`);
+    const unsubscribeFromAuth = auth.onAuthStateChanged(async authUser => {
+      if (authUser) {
+        createUserProfileDocument(authUser);
+        const userRef = firestore.doc(`users/${authUser.uid}`);
 
-        unsubscribeFromUserSnapshot = userRef.onSnapshot(async snapshot => {
-          await setCurrentUser({
+        userRef.onSnapshot(snapshot => {
+          setCurrentUser({
             id: snapshot.id,
             ...snapshot.data()
           });
         });
       } else {
-        setCurrentUser(user);
+        setCurrentUser(authUser);
       }
     });
 
-    return () => {
-      unsubscribe();
-      unsubscribeFromUserSnapshot();
-    };
+    return () => unsubscribeFromAuth();
   }, []);
 
   return currentUser;

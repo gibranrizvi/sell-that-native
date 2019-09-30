@@ -6,7 +6,7 @@ import { formatDistanceToNow } from 'date-fns';
 import ButtonRounded from '../button-rounded/ButtonRounded';
 import { Ionicons } from '@expo/vector-icons';
 
-const PostHeader = ({ openPost, created_at, created_by, navigation }) => {
+const PostHeader = ({ created_at, created_by, navigation }) => {
   let postOptionsActionSheet = React.useRef(null).current;
 
   return (
