@@ -29,7 +29,7 @@ const STATUS_BAR_HEIGHT = Constants.statusBarHeight;
 const IS_IPHONE_X = height === 812 || height === 896;
 
 // HomeScreen component
-const HomeScreen = ({ navigation }) => {
+const CategoryScreen = ({ navigation }) => {
   const { firestore, user, posts } = useContext(FirebaseContext);
 
   const renderPosts = () => {
@@ -90,4 +90,4 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: 'white' }
 });
 
-export default HomeScreen;
+export default CategoryScreen;

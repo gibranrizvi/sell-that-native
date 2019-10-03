@@ -86,6 +86,7 @@ const PostItem = ({
         likes={likes}
         numberOfComments={comments.length}
         openPost={openPost}
+        navigation={navigation}
       />
 
       {/* Comments area */}

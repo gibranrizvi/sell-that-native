@@ -204,6 +204,9 @@ const MainTabNavigator = createBottomTabNavigator(
         header: null
       };
     },
+    tabBarOptions: {
+      keyboardHidesTabBar: true
+    },
     resetOnBlur: true,
     lazy: false,
     tabBarOptions: {

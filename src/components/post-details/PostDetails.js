@@ -1,7 +1,9 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import LikesModal from '../likes-modal/LikesModal';
 
 const PostDetails = ({
+  postId,
   title,
   category,
   price,
@@ -10,8 +12,11 @@ const PostDetails = ({
   likes,
   created_by,
   numberOfComments,
-  openPost
+  openPost,
+  navigation
 }) => {
+  const { navigate } = navigation;
+
   return (
     <View
       style={{
@@ -19,25 +24,25 @@ const PostDetails = ({
         paddingHorizontal: 12
       }}
     >
-      {likes.length > 0 && (
-        <Text
-          style={{
-            fontSize: 12,
-            color: '#555',
-            marginBottom: 4,
-            fontStyle: 'italic'
-          }}
-        >
-          {likes.length}{' '}
-          {likes.length === 1 ? 'person likes this' : 'people like this'}
+      <LikesModal likes={likes} navigation={navigation} />
+
+      <TouchableOpacity onPress={() => openPost()}>
+        <Text style={{ fontWeight: '600', fontSize: 12, marginBottom: 4 }}>
+          {title} - SR {price}
         </Text>
-      )}
+      </TouchableOpacity>
+
       <Text style={{ fontWeight: '600', fontSize: 12, marginBottom: 4 }}>
-        {title} - SR {price}
+        {condition} in{' '}
+        <Text
+          onPress={() => navigate('Category', { category: 'Electronics' })}
+          style={{ fontStyle: 'italic' }}
+        >
+          {category}
+        </Text>
       </Text>
-      <Text style={{ fontSize: 12, marginBottom: 4 }}>
-        {condition} in <Text style={{ fontStyle: 'italic' }}>{category}</Text>
-      </Text>
+
+      {/* TODO link to  */}
       <Text style={{ fontWeight: '600', fontSize: 12, marginBottom: 4 }}>
         {`${created_by.first_name} ${created_by.last_name}`}{' '}
         <Text

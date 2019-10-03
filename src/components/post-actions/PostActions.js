@@ -19,13 +19,11 @@ const PostActions = ({
     if (postLiked) {
       updatedLikes = likes.filter(({ liked_by }) => liked_by.id !== user.id);
     } else {
-      const { id, first_name, last_name, profile_picture } = user;
-
       updatedLikes = [
         ...likes,
         {
           liked_at: Date.now(),
-          liked_by: { id, first_name, last_name, profile_picture }
+          liked_by: user
         }
       ];
     }

@@ -2,7 +2,7 @@ import React from 'react';
 import {
   View,
   Image,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
   StyleSheet,
   ActivityIndicator
 } from 'react-native';
@@ -29,27 +29,27 @@ const ButtonRounded = ({ onPress, image, size, noShadow, style }) => {
         }
         style={[
           styles.touchableImage,
-          { height: size, width: size, borderRadius: size / 4 }
+          { height: size, width: size, borderRadius: size / 2 }
         ]}
       />
     );
   };
 
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
+    <TouchableOpacity onPress={onPress}>
       <View
         style={{
           ...styles.touchableView,
           height: size,
           width: size,
-          borderRadius: size / 4,
+          borderRadius: size / 2,
           shadowRadius: noShadow ? 0 : 12,
           ...style
         }}
       >
         {user ? renderImage() : <ActivityIndicator color="#555" />}
       </View>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   );
 };
 

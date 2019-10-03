@@ -14,7 +14,7 @@ const ButtonStandard = ({ disabled, loading, text, onPress }) => {
 
   const buttonPadding = animation.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 12]
+    outputRange: [0, 8]
   });
 
   const buttonMargin = animation.interpolate({
