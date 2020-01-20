@@ -13,9 +13,6 @@ const LikesModal = ({ likes, navigation }) => {
 
   const { navigate } = navigation;
 
-  let scrollViewRef = React.useRef(null).current;
-  let scrollOffset = null;
-
   return (
     <>
       <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -24,8 +21,7 @@ const LikesModal = ({ likes, navigation }) => {
             style={{
               fontSize: 12,
               color: '#555',
-              marginBottom: 4,
-              fontStyle: 'italic'
+              marginBottom: 4
             }}
           >
             {likes.length}{' '}
@@ -47,17 +43,15 @@ const LikesModal = ({ likes, navigation }) => {
         propagateSwipe
         swipeDirection="down"
         swipeThreshold={200}
-        scrollTo={position => scrollViewRef.scrollTo(position)}
-        scrollOffset={scrollOffset}
         style={{
           justifyContent: 'flex-end',
           margin: 0
         }}
       >
-        <View style={{ height: height / 1.5, justifyContent: 'flex-end' }}>
+        <View style={{ height: height, justifyContent: 'flex-end' }}>
           <View
             style={{
-              height: height / 1.5 - 40,
+              height: height - 32,
               backgroundColor: 'white',
               borderTopLeftRadius: 16,
               borderTopRightRadius: 16
@@ -115,13 +109,7 @@ const LikesModal = ({ likes, navigation }) => {
               </View>
             </View>
             <ScrollView
-              ref={ref => (scrollViewRef = ref)}
-              // TODO try this without state
-              onScroll={({ nativeEvent }) =>
-                (scrollOffset = nativeEvent.contentOffset.y)
-              }
-              scrollEventThrottle={16}
-              style={{ marginVertical: 8, height: height / 2 }}
+              contentContainerStyle={{ marginVertical: 8, height: height / 2 }}
             >
               {likes.map(({ liked_by }, index) => (
                 <View
@@ -129,9 +117,7 @@ const LikesModal = ({ likes, navigation }) => {
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    paddingVertical: 12,
-                    paddingHorizontal: 12,
-                    borderColor: '#CCCCCC'
+                    paddingHorizontal: 12
                   }}
                 >
                   <View style={{ flex: 1 }}>
@@ -150,7 +136,9 @@ const LikesModal = ({ likes, navigation }) => {
                       flex: 8,
                       justifyContent: 'space-between',
                       marginLeft: 12,
-                      borderBottomWidth: index === likes.length - 1 ? 0 : 0.4
+                      paddingVertical: 12,
+                      borderBottomWidth: index === likes.length - 1 ? 0 : 0.4,
+                      borderColor: '#CCCCCC'
                     }}
                   >
                     <TouchableOpacity
@@ -169,11 +157,7 @@ const LikesModal = ({ likes, navigation }) => {
                         >
                           {liked_by.first_name} {liked_by.last_name}
                         </Text>
-                        {liked_by.address && (
-                          <Text style={{ fontSize: 12 }}>
-                            {liked_by.address}
-                          </Text>
-                        )}
+                        <Text style={{ fontSize: 12 }}>{liked_by.address}</Text>
                       </>
                     </TouchableOpacity>
                   </View>

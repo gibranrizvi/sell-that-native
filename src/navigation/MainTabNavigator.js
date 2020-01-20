@@ -46,8 +46,11 @@ export const HomeStack = createStackNavigator(
       screen: PostScreen,
       navigationOptions: ({ navigation }) => {
         return {
-          headerTitle: 'Comments',
+          headerTitle: null,
           headerLeft: <GoBackIconButton onPress={() => navigation.goBack()} />,
+          headerRight: (
+            <GoToProfileButton onPress={() => navigation.navigate('Profile')} />
+          ),
           headerStyle: { borderBottomWidth: 0 }
         };
       }
@@ -58,9 +61,9 @@ export const HomeStack = createStackNavigator(
         return {
           headerTitle: 'Profile',
           headerLeft: <GoBackIconButton onPress={() => navigation.goBack()} />,
-          headerRight: (
-            <OpenDrawerIconButton onPress={() => navigation.openDrawer()} />
-          ),
+          // headerRight: (
+          //   <OpenDrawerIconButton onPress={() => navigation.openDrawer()} />
+          // ),
           headerStyle: { borderBottomWidth: 0 }
         };
       }
@@ -108,9 +111,9 @@ const CreateStack = createStackNavigator(
         return {
           headerTitle: 'Profile',
           headerLeft: <GoBackIconButton onPress={() => navigation.goBack()} />,
-          headerRight: (
-            <OpenDrawerIconButton onPress={() => navigation.openDrawer()} />
-          ),
+          // headerRight: (
+          //   <OpenDrawerIconButton onPress={() => navigation.openDrawer()} />
+          // ),
           headerStyle: { borderBottomWidth: 0 }
         };
       }
@@ -162,9 +165,9 @@ const InboxStack = createStackNavigator(
         return {
           headerTitle: 'Profile',
           headerLeft: <GoBackIconButton onPress={() => navigation.goBack()} />,
-          headerRight: (
-            <OpenDrawerIconButton onPress={() => navigation.openDrawer()} />
-          ),
+          // headerRight: (
+          //   <OpenDrawerIconButton onPress={() => navigation.openDrawer()} />
+          // ),
           headerStyle: { borderBottomWidth: 0 }
         };
       }

@@ -73,6 +73,7 @@ const PostItem = ({
         postLiked={postLiked}
         openPost={openPost}
         postsRef={postsRef}
+        navigation={navigation}
       />
 
       {/* Post information */}

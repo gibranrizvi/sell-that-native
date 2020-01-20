@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import LikesModal from '../likes-modal/LikesModal';
 
 const PostDetails = ({
-  postId,
   title,
   category,
   price,
@@ -15,7 +14,7 @@ const PostDetails = ({
   openPost,
   navigation
 }) => {
-  const { navigate } = navigation;
+  const { navigate, state } = navigation;
 
   return (
     <View
@@ -26,46 +25,56 @@ const PostDetails = ({
     >
       <LikesModal likes={likes} navigation={navigation} />
 
-      <TouchableOpacity onPress={() => openPost()}>
+      <TouchableOpacity
+        onPress={() => openPost()}
+        disabled={state.routeName === 'Post'}
+      >
         <Text style={{ fontWeight: '600', fontSize: 12, marginBottom: 4 }}>
           {title} - SR {price}
         </Text>
       </TouchableOpacity>
 
-      <Text style={{ fontWeight: '600', fontSize: 12, marginBottom: 4 }}>
-        {condition} in{' '}
-        <Text
-          onPress={() => navigate('Category', { category: 'Electronics' })}
-          style={{ fontStyle: 'italic' }}
-        >
-          {category}
+      <TouchableOpacity
+        onPress={() => navigate('Category', { category: 'Electronics' })}
+      >
+        <Text style={{ fontWeight: '600', fontSize: 12, marginBottom: 4 }}>
+          {condition} in <Text style={{ fontStyle: 'italic' }}>{category}</Text>
         </Text>
-      </Text>
+      </TouchableOpacity>
 
-      {/* TODO link to  */}
-      <Text style={{ fontWeight: '600', fontSize: 12, marginBottom: 4 }}>
-        {`${created_by.first_name} ${created_by.last_name}`}{' '}
-        <Text
-          style={{
-            fontSize: 12,
-            fontWeight: 'normal'
-          }}
-        >
-          {description}
+      <TouchableOpacity
+        onPress={() => openPost()}
+        disabled={state.routeName === 'Post'}
+      >
+        <Text style={{ fontWeight: '600', fontSize: 12, marginBottom: 4 }}>
+          {`${created_by.first_name} ${created_by.last_name}`}{' '}
+          <Text
+            style={{
+              fontSize: 12,
+              fontWeight: 'normal'
+            }}
+          >
+            {description}
+          </Text>
         </Text>
-      </Text>
-      <TouchableOpacity onPress={() => openPost()}>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => openPost()}
+        disabled={state.routeName === 'Post'}
+      >
         <Text
           style={{
             fontSize: 12,
             color: '#555',
-            fontStyle: 'italic',
             alignSelf: 'flex-start'
           }}
         >
           {numberOfComments === 0
             ? 'Write a comment'
-            : `${numberOfComments} comment${numberOfComments !== 1 ? 's' : ''}`}
+            : `${
+                state.routeName === 'Post' ? '' : 'Show '
+              }${numberOfComments} comment${numberOfComments !== 1 ? 's' : ''}`}
         </Text>
       </TouchableOpacity>
     </View>

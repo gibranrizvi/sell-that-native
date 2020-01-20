@@ -16,7 +16,6 @@ import Constants from 'expo-constants';
 
 // Local imports
 import layout from '../constants/layout';
-import Header from '../components/inbox-screen/Header';
 
 // Component imports
 

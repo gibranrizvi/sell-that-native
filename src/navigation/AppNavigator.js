@@ -29,7 +29,8 @@ const MainDrawerNavigator = createDrawerNavigator(
 );
 
 const AppStackNavigator = createStackNavigator({
-  Main: MainDrawerNavigator
+  // Main: MainDrawerNavigator
+  Main: MainTabNavigator
 });
 
 export default createAppContainer(

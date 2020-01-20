@@ -8,14 +8,16 @@ const PostActions = ({
   likes,
   postLiked,
   openPost,
-  postsRef
+  postsRef,
+  navigation
 }) => {
+  const { state } = navigation;
+
   const likeOrUnlikePost = () => {
     const postRef = postsRef.doc(`${postId}`);
 
     let updatedLikes;
 
-    // if user has already liked this post, remove like object from post document
     if (postLiked) {
       updatedLikes = likes.filter(({ liked_by }) => liked_by.id !== user.id);
     } else {
@@ -54,10 +56,16 @@ const PostActions = ({
         </View>
       )}
       <View style={{ flex: 1 }}>
-        <TouchableOpacity onPress={() => openPost()}>
-          <View>
-            <Ionicons name="ios-chatbubbles" color="#555" size={28} />
-          </View>
+        <TouchableOpacity
+          onPress={() =>
+            state.routeName === 'Post'
+              ? {
+                  // TODO open keyboard
+                }
+              : openPost()
+          }
+        >
+          <Ionicons name="ios-chatbubbles" color="#555" size={28} />
         </TouchableOpacity>
       </View>
       <View style={{ flex: 8 }} />
