@@ -37,6 +37,6 @@ export default createAppContainer(
   createSwitchNavigator({
     AuthLoading: AuthLoadingScreen,
     Auth: AuthScreen,
-    Main: AppStackNavigator
+    Main: MainTabNavigator
   })
 );
