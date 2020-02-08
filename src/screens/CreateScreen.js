@@ -90,6 +90,27 @@ const CreateScreen = ({ navigation }) => {
           />
         </View>
 
+        {/* Product images */}
+        <View style={styles.sectionView}>
+          <Text style={styles.subHeadingText}>Add images</Text>
+          <AddImagesCarousel
+            addImage={imageToAdd =>
+              images.filter(image => image === imageToAdd).length === 0
+                ? setImages([...images, imageToAdd])
+                : alert(
+                    'You have already added this image, please select another'
+                  )
+            }
+            removeImage={imageToBeRemoved => {
+              const filteredImages = images.filter(
+                image => image !== imageToBeRemoved
+              );
+              return setImages(filteredImages);
+            }}
+            images={images}
+          />
+        </View>
+
         {/* Product title */}
         <View style={styles.sectionView}>
           <Text style={styles.subHeadingText}>Enter a title</Text>
@@ -166,27 +187,6 @@ const CreateScreen = ({ navigation }) => {
               placeholder="Description"
             />
           </View>
-        </View>
-
-        {/* Product images */}
-        <View style={styles.sectionView}>
-          <Text style={styles.subHeadingText}>Add images</Text>
-          <AddImagesCarousel
-            addImage={imageToAdd =>
-              images.filter(image => image === imageToAdd).length === 0
-                ? setImages([...images, imageToAdd])
-                : alert(
-                    'You have already added this image, please select another'
-                  )
-            }
-            removeImage={imageToBeRemoved => {
-              const filteredImages = images.filter(
-                image => image !== imageToBeRemoved
-              );
-              return setImages(filteredImages);
-            }}
-            images={images}
-          />
         </View>
 
         {/* Submit button */}
